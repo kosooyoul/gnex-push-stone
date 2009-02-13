@@ -1,0 +1,23 @@
+/*****************************************************************************/
+/* GNEX Image Master v3.20 Map Output for Mobile C						 */
+/*                                                                           */
+/* Output file : C:\Work\PressStone\MapImages.smc					*/
+/*    IDF file  : C:\Work\PressStone\MapImages.idf					*/
+/*                                                                           */
+/* First written : Friday, February 13, 2004 15:07:32			     */
+/* Last modified : Friday, February 13, 2004 16:10:28			     */
+/*                                                                           */
+/* Copyright(c) 2000~2007 Sinjisoft Corporation.  All rights reserved.       */
+/*****************************************************************************/
+
+// 전체 블럭에 대해 지정한 속성 배열 저장
+binary MapImages_BlockInfo={0, 0, 0, 0, 0};
+int MapImages_BlockName[5]; // 전체 블럭에 대한 블럭 포인터 배열 저장
+void MapImages_BlockNameInit()
+{
+	MapImages_BlockName[0]=MapChip[0];
+	MapImages_BlockName[1]=MapChip[1];
+	MapImages_BlockName[2]=MapChip[2];
+	MapImages_BlockName[3]=MapChip[3];
+	MapImages_BlockName[4]=MapChip[4];
+}
