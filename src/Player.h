@@ -1,37 +1,42 @@
+/*
+	PushStone전용 플레이어 관련
+	by www.Ahyane.net ^^*
+*/
+
 struct Player{
 	int X;
 	int Y;
 	int Direction;
 	int Frame;
-	int Scroll;
+	int ScrollX;
+	int ScrollY;
 }UnitPlayer;
 
-void DrawPlayer(int StageX, int StageY){
-	CopyImage(UnitPlayer.X * 16 + StageX, UnitPlayer.Y * 16 + StageY, MapChip[4]);
+void SetPlayer(int In_X, int In_Y, int In_Direction){
+	UnitPlayer.X = In_X;
+	UnitPlayer.Y = In_Y;
+	UnitPlayer.Direction = In_Direction;
+	UnitPlayer.Frame = 0;
+	UnitPlayer.ScrollX = 0;
+	UnitPlayer.ScrollY = 0;
+	return;
 }
 
-void MovePlayer(int Direction){
-	switch(Direction){
-		case D_Up:
-			if(IsMoveAbleCell(UnitPlayer.X, UnitPlayer.Y - 1) == Yes){
-				UnitPlayer.Y--;
-			}
-			break;
-		case D_Down:
-			if(IsMoveAbleCell(UnitPlayer.X, UnitPlayer.Y + 1) == Yes){
-				UnitPlayer.Y++;
-			}
-			break;
-		case D_Left:
-			if(IsMoveAbleCell(UnitPlayer.X - 1, UnitPlayer.Y) == Yes){
-				UnitPlayer.X--;
-			}
-			break;
-		case D_Right:
-			if(IsMoveAbleCell(UnitPlayer.X + 1, UnitPlayer.Y) == Yes){
-				UnitPlayer.X++;
-			}
-			break;
+void ScrollPlayer(){
+	if(UnitPlayer.ScrollX > 0){
+		UnitPlayer.ScrollX -= D_PlayerSCU;
+	}else if(UnitPlayer.ScrollX < 0){
+		UnitPlayer.ScrollX += D_PlayerSCU;
 	}
-	return;
+
+	if(UnitPlayer.ScrollY > 0){
+		UnitPlayer.ScrollY -= D_PlayerSCU;
+	}else if(UnitPlayer.ScrollY < 0){
+		UnitPlayer.ScrollY += D_PlayerSCU;
+	}
+}
+
+void DrawPlayer(int StartCellX, int StartCellY, int StageX, int StageY){
+	CopyImage(UnitPlayer.ScrollX + (UnitPlayer.X - StartCellX) * 16 + StageX
+			, UnitPlayer.ScrollY + (UnitPlayer.Y - StartCellY) * 16 + StageY, MapChip[4]);
 }

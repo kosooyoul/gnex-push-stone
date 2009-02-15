@@ -1,31 +1,36 @@
+/*
+	PushStone전용 맵 관련
+	by www.Ahyane.net ^^*
+*/
+
 #include "MapImages.sbm"
+#include "MapData.h"
 
-#define D_MoveAble	0
+int MapScrollX = 0;
+int MapScrollY = 0;
 
-const int Map[11][11] = {
-	1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0,
-	1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0,
-	1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0,
-	0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0,
-	1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0,
-	0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0,
-	0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0,
-	0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0,
-	0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
-	1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0,
-	1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-};
+void ScrollMap(){
+	if(MapScrollX > 0){
+		MapScrollX -= D_MapSCU;
+	}else if(MapScrollX < 0){
+		MapScrollX += D_MapSCU;
+	}
 
-void DrawMap(int StartX, int StartY, int SizeX, int SizeY, int StageX, int StageY){
+	if(MapScrollY > 0){
+		MapScrollY -= D_MapSCU;
+	}else if(MapScrollY < 0){
+		MapScrollY += D_MapSCU;
+	}
+}
+
+void DrawMap(int StartCellX, int StartCellY, int EndCellX, int EndCellY, int StageX, int StageY){
 	int x, y;
 
-	for(x = 0; x < SizeX+10; x++){
-		for(y = 0; y < SizeY+10; y++){
-			if(x + StartX > -1 && x + StartX < 11 && y + StartY > -1 && y + StartY < 11){
-				CopyImage(x * 16 + StageX, y * 16 + StageY, MapChip[Map[y + StartY][x + StartX]]);
-			}else{
-				SetColor(S_BLACK);
-				FillRect(x * 16 + StageX, y * 16 + StageY, (x + 1) * 16 + StageX - 1, (y + 1) * 16 + StageY - 1);
+	for(x = StartCellX; x <= EndCellX; x++){
+		for(y = StartCellY; y <= EndCellY ; y++){
+			if(x >= 0 && x < MaxSizeX && y >= 0 && y < MaxSizeY){
+				CopyImage(MapScrollX + (x - StartCellX) * 16 + StageX
+						, MapScrollY + (y - StartCellY) * 16 + StageY, MapChip[Map[y][x]]);
 			}
 		}
 	}		
