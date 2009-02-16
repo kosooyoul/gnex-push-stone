@@ -50,19 +50,13 @@
 
 //-------------------- 진행 변수 정의 --------------------//
 //이전 게임 모드
-int HistoryMode = Game_Icon;
+//int HistoryMode = Game_Icon;
 
 //메뉴 선택 번호
-int Status_Select1 = 0;
-int Status_Select2 = 0;
-int Status_Select3 = 0;
+int Status_Select[3] = {0,0,0};
 
 //진행 변수(애니매이션장면번호, 타이머시간, 각도, 투명도 등)
-int Status_Value1 = 0;
-int Status_Value2 = 0;
-int Status_Value3 = 0;
-int Status_Value4 = 0;
-int Status_Value5 = 0;
+int Status_Value[5] = {0,0,0,0,0};
 
 //배열(도형 등)
 int Temp1[4];
@@ -71,15 +65,15 @@ int Temp2[4];
 //진행 변수 초기화
 void InitStatusValue(){
 	//진행 변수
-	Status_Value1 = 0;
-	Status_Value2 = 0;
-	Status_Value3 = 0;
-	Status_Value4 = 0;
-	Status_Value5 = 0;
+	Status_Value[0] = 0;
+	Status_Value[1] = 0;
+	Status_Value[2] = 0;
+	Status_Value[3] = 0;
+	Status_Value[4] = 0;
 	//메뉴 선택 번호	
-	Status_Select1 = 0;
-	Status_Select2 = 0;
-	Status_Select3 = 0;
+	Status_Select[0] = 0;
+	Status_Select[1] = 0;
+	Status_Select[2] = 0;
 	return;
 }
 
@@ -91,7 +85,7 @@ void InitStatusValue(){
 void DivGameShow(int SysData){
 	switch(Status_GameMode){
 		case Game_Init:
-			SetTimer(20, 1);
+			SetTimer(40, 1);
 			Status_GameMode = Game_Icon;
 			break;
 

@@ -6,18 +6,17 @@
 /*	 - Blocks : Block name, Type, Start X, Start Y, Width, Height	     */
 /*		, Hotspot X, Hotspot Y, BlockInfo, BlockIdx, Transparent, Transparent Color       */
 /*                                                                           */
-/* First written : Friday, February 13, 2004 15:07:32			     */
-/* Last modified : Monday, February 16, 2004 13:21:26			     */
+/* First written : Monday, February 16, 2004 18:18:14			     */
+/* Last modified : Monday, February 16, 2004 19:18:02			     */
 /*                                                                           */
 /* Copyright(c) 2000~2007 Sinjisoft Corporation.  All rights reserved.       */
 /*****************************************************************************/
 
 IDF3
 BlockSizeExtension=0
-Image=Mapchip.bmp
-MapChip[000],9,18,1,16,16,0,0,0,7,0,2134048
-MapChip[001],10,1,1,16,16,0,0,0,6,0,2134048
-MapChip[002],9,35,1,16,16,0,0,0,8,0,2134048
-MapChip[003],9,52,1,16,16,0,0,0,9,0,2134048
-MapChip[004],9,69,1,16,16,0,0,0,10,1,9136127
+Image=TravelMap.bmp
+Img_TravelMapBlock[000],11,0,1,49,27,0,0,0,2,1,16253176
+Img_TravelMapBlock[001],11,50,1,49,27,0,0,0,3,1,16253176
+Img_TravelMapBlock[002],11,100,1,49,27,0,0,0,4,1,16253176
+Img_TravelMapSelect,11,155,18,39,26,-5,-17,0,8,1,16253176
 

@@ -169,6 +169,7 @@ int GetAngle(int BaseX, int BaseY, int TargetX, int TargetY){
 	}
 }
 
+/*
 //도형 회전
 void RotatePolygon(int *VX, int *VY, int AngleX, int AngleY, int AngleZ, int DgreeX, int DgreeY, int Spread){
 	int TX[4], TY[4];
@@ -189,6 +190,7 @@ void RotatePolygon(int *VX, int *VY, int AngleX, int AngleY, int AngleZ, int Dgr
 	}
 	FillPoly(TX, TY, VEdge);		
 }
+*/
 
 /*
 void ShowIcon(){

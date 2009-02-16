@@ -38,5 +38,6 @@ void ScrollPlayer(){
 
 void DrawPlayer(int StartCellX, int StartCellY, int StageX, int StageY){
 	CopyImage(UnitPlayer.ScrollX + (UnitPlayer.X - StartCellX) * 16 + StageX
-			, UnitPlayer.ScrollY + (UnitPlayer.Y - StartCellY) * 16 + StageY, MapChip[4]);
+			, UnitPlayer.ScrollY + (UnitPlayer.Y - StartCellY) * 16 + StageY
+			, MapChip[4]);
 }

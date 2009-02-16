@@ -49,20 +49,20 @@ void StartStage(int Index){
 void DrawStage(int Index, int StageScrollX, int StageScrollY){
 	int x, y;
 	//맵 출력
-	DrawMap(UnitStage[Status_CurrentStage].StartCellX, UnitStage[Status_CurrentStage].StartCellY,
+	DrawMap(UnitStage[Index].StartCellX, UnitStage[Index].StartCellY,
 			UnitStage[Index].EndCellX, UnitStage[Index].EndCellY, StageScrollX, StageScrollY);
 
 	//돌덩이와 플레이어 출력
 	for(x = UnitStage[Index].StartCellX; x <= UnitStage[Index].EndCellX; x++){
 		for(y = UnitStage[Index].StartCellY; y <= UnitStage[Index].EndCellY; y++){
-			if(Place[y][x] == Null){
+			if(GetCurrentPlace(x, y) == Null){
 				if(UnitPlayer.Y == y && UnitPlayer.X == x){
 					ScrollPlayer();
 					DrawPlayer(UnitStage[Index].StartCellX, UnitStage[Index].StartCellY, StageScrollX, StageScrollY);
 				}
 			}else{
-				ScrollStone(Place[y][x]);
-				DrawStone(Place[y][x], UnitStage[Index].StartCellX, UnitStage[Index].StartCellY, StageScrollX, StageScrollY);
+				ScrollStone(GetCurrentPlace(x, y));
+				DrawStone(GetCurrentPlace(x, y), UnitStage[Index].StartCellX, UnitStage[Index].StartCellY, StageScrollX, StageScrollY);
 			}
 		}
 	}
@@ -70,7 +70,7 @@ void DrawStage(int Index, int StageScrollX, int StageScrollY){
 }
 
 int IsMoveAbleCell(int In_X, int In_Y){
-	if(Map[In_Y][In_X] > D_MoveAble && Place[In_Y][In_X] == -1
+	if(Map[In_Y][In_X] > D_MoveAble && GetCurrentPlace(In_X, In_Y) == -1
 	&& In_Y >= 0 && In_Y < MaxSizeY	&& In_X >= 0 && In_X < MaxSizeX){
 		if(UnitStage[Status_CurrentStage].StartCellX <= In_X && UnitStage[Status_CurrentStage].EndCellX >= In_X
 		&& UnitStage[Status_CurrentStage].StartCellY <= In_Y && UnitStage[Status_CurrentStage].EndCellY >= In_Y){
