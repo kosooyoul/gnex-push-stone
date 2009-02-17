@@ -3,9 +3,19 @@
 	by www.Ahyane.net ^^*
 */
 
-#include "GameTravel.h"
+//메뉴 선택 표시 스크롤
+int Scroll_ShowCounter = 0;
+
 #include "GameNormal.h"
 #include "GameTimeAttack.h"
+
+void ShowScroll(){
+	if(Scroll_ShowCounter > 0){
+		Scroll_ShowCounter -= Scroll_ShowCounter * 2 / MaxShowScrollCounting+1;
+	}else if(Scroll_ShowCounter < 0){
+		Scroll_ShowCounter -= Scroll_ShowCounter * 2 / MaxShowScrollCounting-1;
+	}
+}
 
 //타이머 작동
 void ShowTimer(int *In_Status){
@@ -19,6 +29,16 @@ void ShowTimer(int *In_Status){
 		*(In_Status + 1) += 1;	//Status_Value[1]++;
 	}
 	return;
+}
+
+void ShowBaseBack(){
+	CopyImage( 18,  16, Img_TitleWord1);
+	CopyImage( 18,  16, Img_TitleWord2);
+	CopyImage( 14,  37, Img_TitleStar1);
+	CopyImage( 78,  10, Img_TitleStar2);
+	CopyImage(110,  82, Img_TitleStar1);
+	CopyImage(169,  51, Img_TitleStar2);
+	CopyImage(213,  47, Img_TitleStar1);
 }
 
 /*
@@ -250,6 +270,8 @@ void ShowIcon(){
 	Status_Value[4] : 도형 회전 각도 값
 */
 void ShowTitle(){
+	int i;
+
 	ClearWhite();
 	
 	//기본 배경
@@ -260,12 +282,12 @@ void ShowTitle(){
 	if(Status_Value[1] == 0){
 		switch(Status_Value[0]){
 			case 0:		Status_Value[2] = 0;		break;//INIT
-			case 1:		Status_Value[2] = 10;		break;//+S1
-			case 2:		Status_Value[2] = 10;		break;//+S2
-			case 3:		Status_Value[2] = 10;		break;//+S3
-			case 4:		Status_Value[2] = 15;		break;//+W1
-			case 5:		Status_Value[2] = 15;		break;//+W2
-			case 6:		Status_Value[2] = 1000;		break;//NO
+			case 1:		Status_Value[2] = 15;		break;//+W1
+			case 2:		Status_Value[2] = 15;		break;//+W2
+			case 3:		Status_Value[2] = 15;		break;//+STAR*5
+			case 4:		Status_Value[2] = 5;		break;//Wait
+			case 5:		Status_Value[2] = 10;		break;//+STAR*6
+			case 6:		Status_Value[2] = 1000;		break;//Blink
 			case 7:		Status_Value[2] = -1;		break;//DEMO
 			case 8:		Status_Value[2] = 10;		break;//FADEOUT
 		}
@@ -273,53 +295,69 @@ void ShowTitle(){
 
 	switch(Status_Value[0]){
 		case 0:
-			Temp1[0] = 00;Temp2[0] = 15;
-			Temp1[1] = 30;Temp2[1] = 00;
-			Temp1[2] = 15;Temp2[2] = 15;
-			Temp1[3] = 30;Temp2[3] = 30;
+			Temp1[0] =-4;Temp2[0] =- 30;
+			Temp1[1] = 4;Temp2[1] =- 30;
+			Temp1[2] = 6;Temp2[2] =- 35;
+			Temp1[3] =-6;Temp2[3] =- 35;
 			break;
 
 		case 1:
-			GetAnimationPosition(-100, 120, 28, 84, Status_Value[1], Status_Value[2], Movement_FadeOut, 3, Guide_Straight, 100);
-			CopyImage(UnitReturnPosition.X, UnitReturnPosition.Y, Img_TitleStone);
-			break;
-
-		case 2:
-			CopyImage( 28,  84, Img_TitleStone);
-			GetAnimationPosition(-20, 300, 55, 154, Status_Value[1], Status_Value[2], Movement_FadeOut, 3, Guide_Straight, 100);
-			CopyImage(UnitReturnPosition.X, UnitReturnPosition.Y, Img_TitleStone);
-			break;
-
-		case 3:
-			CopyImage( 28,  84, Img_TitleStone);
-			CopyImage( 55, 154, Img_TitleStone);
-			GetAnimationPosition(140, -80, 104, 10, Status_Value[1], Status_Value[2], Movement_FadeOut, 3, Guide_Straight, 100);
-			CopyImage(UnitReturnPosition.X, UnitReturnPosition.Y, Img_TitleStone);
-			break;
-
-		case 4:
-			CopyImage( 28,  84, Img_TitleStone);
-			CopyImage( 55, 154, Img_TitleStone);
-			CopyImage(104,  10, Img_TitleStone);
-			GetAnimationPosition(-140, 20, 33, 38, Status_Value[1], Status_Value[2], Movement_Straight, 0, Guide_RightGourd, 70);
+			GetAnimationPosition(-140, 20, 18, 16, Status_Value[1], Status_Value[2], Movement_Straight, 0, Guide_RightGourd, 70);
 			CopyImage(UnitReturnPosition.X, UnitReturnPosition.Y, Img_TitleWord1);
 			break;
 
-		case 5:
-			CopyImage( 28,  84, Img_TitleStone);
-			CopyImage( 55, 154, Img_TitleStone);
-			CopyImage(104,  10, Img_TitleStone);
-			CopyImage( 33,  38, Img_TitleWord1);
-			GetAnimationPosition(240, 20, 33, 38, Status_Value[1], Status_Value[2], Movement_Straight, 0, Guide_LeftGourd, 70);
+		case 2:
+			CopyImage( 17,  16, Img_TitleWord1);
+			GetAnimationPosition( 240, 20, 18, 16, Status_Value[1], Status_Value[2], Movement_Straight, 0, Guide_LeftGourd, 70);
 			CopyImage(UnitReturnPosition.X, UnitReturnPosition.Y, Img_TitleWord2);
+			break;
+		
+		case 3:
+			CopyImage( 17,  16, Img_TitleWord1);
+			CopyImage( 17,  16, Img_TitleWord2);
+			GetAnimationPosition( -20, 220,  14,  37, Status_Value[1], Status_Value[2], Movement_FadeIn, 2, Guide_RightCurve, 60);
+			CopyImage(UnitReturnPosition.X, UnitReturnPosition.Y, Img_TitleStar1);
+			GetAnimationPosition( -20, 240,  78,  10, Status_Value[1], Status_Value[2], Movement_FadeIn, 2, Guide_RightCurve, 70);
+			CopyImage(UnitReturnPosition.X, UnitReturnPosition.Y, Img_TitleStar2);
+			GetAnimationPosition( 260, 200, 110,  82, Status_Value[1], Status_Value[2], Movement_FadeIn, 2, Guide_LeftCurve, 80);
+			CopyImage(UnitReturnPosition.X, UnitReturnPosition.Y, Img_TitleStar1);
+			GetAnimationPosition( 260, 250, 169,  51, Status_Value[1], Status_Value[2], Movement_FadeIn, 2, Guide_LeftCurve, 60);
+			CopyImage(UnitReturnPosition.X, UnitReturnPosition.Y, Img_TitleStar2);
+			GetAnimationPosition( -20, 230, 213,  47, Status_Value[1], Status_Value[2], Movement_FadeIn, 2, Guide_RightCurve, 70);
+			CopyImage(UnitReturnPosition.X, UnitReturnPosition.Y, Img_TitleStar1);
+			break;
+		
+		case 4:
+			ShowBaseBack();
+			break;
+		
+		case 5:
+			ShowBaseBack();
+			GetAnimationPosition( 110, 150, -20, 170, Status_Value[1], Status_Value[2], Movement_FadeIn, 4, Guide_RightCurve, 100);
+			CopyImage(UnitReturnPosition.X, UnitReturnPosition.Y, Img_TitleStar1);
+			GetAnimationPosition( 110, 150, 240, 170, Status_Value[1], Status_Value[2], Movement_FadeIn, 4, Guide_RightCurve, 100);
+			CopyImage(UnitReturnPosition.X, UnitReturnPosition.Y, Img_TitleStar2);
+			GetAnimationPosition( 110, 150, -20, 240, Status_Value[1], Status_Value[2], Movement_FadeIn, 4, Guide_RightCurve, 100);
+			CopyImage(UnitReturnPosition.X, UnitReturnPosition.Y, Img_TitleStar1);
+			GetAnimationPosition( 110, 150, 240, 240, Status_Value[1], Status_Value[2], Movement_FadeIn, 4, Guide_LeftCurve, 100);
+			CopyImage(UnitReturnPosition.X, UnitReturnPosition.Y, Img_TitleStar2);
+			GetAnimationPosition( 110, 150,  20, 310, Status_Value[1], Status_Value[2], Movement_FadeIn, 4, Guide_LeftCurve, 100);
+			CopyImage(UnitReturnPosition.X, UnitReturnPosition.Y, Img_TitleStar1);
+			GetAnimationPosition( 110, 150, 220, 310, Status_Value[1], Status_Value[2], Movement_FadeIn, 4, Guide_LeftCurve, 100);
+			CopyImage(UnitReturnPosition.X, UnitReturnPosition.Y, Img_TitleStar2);
 			break;
 
 		case 6:
-			CopyImage( 28,  84, Img_TitleStone);
-			CopyImage( 55, 154, Img_TitleStone);
-			CopyImage(104,  10, Img_TitleStone);
-			CopyImage( 33,  38, Img_TitleWord1);
-			CopyImage( 33,  38, Img_TitleWord2);
+			ShowBaseBack();
+
+			if(Status_Value[4] < 360) Status_Value[4] += 24;
+			else Status_Value[4] = 0;
+
+			for(i = 0; i < 40; i++){
+				SetColorRGB(250, i + 180, i + 200);
+				RotatePolygon(Temp1, Temp2, 0, 120, -Status_Value[4] + i * 10, 120, 100, -i*2);
+			}
+
 			if(Status_Value[1] % 15 < 7){
 				SetColor(S_WHITE);
 				FillRectEx( 5, 220, 235, 236, 2);
@@ -333,34 +371,9 @@ void ShowTitle(){
 			InitStatusValue();
 			//Status_GameMode = Game_Demo;	//데모보기
 			return;
-
+		
 		case 8:
-			if(Status_Value[1] >  6) Status_Value[3] = 4;
-			else if(Status_Value[1] >  4) Status_Value[3] = 3;
-			else if(Status_Value[1] >  2) Status_Value[3] = 2;
-			else Status_Value[3] = 1;
-			if(Status_Value[3] < 4){
-				CopyImageEx(28, 84, Img_TitleStone, Status_Value[3], 0, 0, 0);
-				CopyImageEx(55, 154, Img_TitleStone, Status_Value[3], 0, 0, 0);
-				CopyImageEx(104, 10, Img_TitleStone, Status_Value[3], 0, 0, 0);
-				CopyImageEx( 33,  38, Img_TitleWord1, Status_Value[3], 0, 0, 0);
-				CopyImageEx( 33,  38, Img_TitleWord2, Status_Value[3], 0, 0, 0);
-			}
-			/*{
-				if(Status_Value[4] < 360) Status_Value[4] += 10 + Status_Value[1];
-				else Status_Value[4] = 0;
-				SetColorRGB(200, 200, 200);
-				RotatePolygon(Temp1, Temp2, 220, 270, Status_Value[4] +  60, 120, 175, Status_Value[1] * 4);
-				RotatePolygon(Temp1, Temp2, 220, 270, Status_Value[4] + 180, 120, 175, Status_Value[1] * 4);
-				RotatePolygon(Temp1, Temp2, 220, 270, Status_Value[4] + 300, 120, 175, Status_Value[1] * 4);
-				SetColor(S_SKY);
-				RotatePolygon(Temp1, Temp2, 220,  90, Status_Value[4]      , 120, 175, Status_Value[1] * 4);
-				RotatePolygon(Temp1, Temp2, 220,  90, Status_Value[4] + 120, 120, 175, Status_Value[1] * 4);
-				RotatePolygon(Temp1, Temp2, 220,  90, Status_Value[4] + 240, 120, 175, Status_Value[1] * 4);
-			}*/
-			
-			break;
-		case 9:
+			ShowBaseBack();
 			InitStatusValue();
 			Status_GameMode = Game_SelectPart;
 			return;
@@ -389,70 +402,80 @@ void ShowTitle(){
 
 	Status_Value[4] : 메뉴 깊이
 
+	Status_Value[5] : 이미지 투명도
+
 	Status_Select[0] : 선택한 메인 메뉴 번호
 
 	Status_Select[1] : 선택한 서브 메뉴 번호
 */
 void ShowSelectPart(){
+	int i;
 	string Temp;		//곧 지움
 	ClearWhite();
 	
 	//기본 배경
 	CopyImage(   0,   0, Img_TitleBackground1);
 	CopyImage(   0, 150, Img_TitleBackground2);
+	ShowBaseBack();
 
 	//장면의 프레임수 결정
 	if(Status_Value[1] == 0){
 		switch(Status_Value[0]){
-			case 0:		Status_Value[2] = 30;		break;//BACK
-			case 1:		Status_Value[2] = 30;		break;//ITEM
+			case 0:		Status_Value[2] = 10;		break;//BACK
+			case 1:		Status_Value[2] = 10;		break;//STATUSBAR
 			case 2:		Status_Value[2] = -1;		break;//SELECT MENU
-			case 3:		Status_Value[2] = 30;		break;//CLEAR
+			case 3:		Status_Value[2] = 10;		break;//CLEAR
 		}
 	}
 
 	switch(Status_Value[0]){
 		case 0:
-			//화면 열리는 모양
-			DrawStr(10,10,"화면 열리는 모양");
+			if(Status_Value[1] < 2) Status_Value[5] = 3;
+			else if(Status_Value[1] < 4) Status_Value[5] = 2;
+			else if(Status_Value[1] < 8) Status_Value[5] = 1;
+			else Status_Value[5] = 0;
+			CopyImageEx(  0, 89, Img_TitleMenuBack, Status_Value[5], 0, 0, 0);
 			break;
 
 		case 1:
-			//구성요소 나타나는 모양
-			DrawStr(10,10,"구성요소 나타나는 모양");
+			CopyImage(  0, 89, Img_TitleMenuBack);
+			GetAnimationPosition( 1, 348, 0, 262, Status_Value[1], Status_Value[2], Movement_Straight, 0, Guide_Straight, 100);
+			CopyImage(UnitReturnPosition.X, UnitReturnPosition.Y, Img_TitleUnderStatusBar);
 			break;
 
 		case 2:
+			CopyImage(  0, 89, Img_TitleMenuBack);
+			CopyImage( 0, 262, Img_TitleUnderStatusBar);
 			//선택한 메뉴에 대한 장면
+			ShowScroll();
+			SetColor(S_MOON);
+			FillRectEx( 40, 165, 200, 185, 2);
+			SetFontType(S_FONT_LARGE, S_PINK, S_BLACK, S_ALIGN_LEFT);
+			DrawStr(70, 130 + Scroll_ShowCounter, Str_MainMenuName[(Status_Select[0] + MAXMainMenu - 2) % MAXMainMenu]);
+			DrawStr(70, 210 + Scroll_ShowCounter, Str_MainMenuName[(Status_Select[0] + MAXMainMenu + 2) % MAXMainMenu]);
+			SetFontType(S_FONT_LARGE, S_ROSE, S_BLACK, S_ALIGN_LEFT);
+			DrawStr(70, 150 + Scroll_ShowCounter, Str_MainMenuName[(Status_Select[0] + MAXMainMenu - 1) % MAXMainMenu]);
+			DrawStr(70, 190 + Scroll_ShowCounter, Str_MainMenuName[(Status_Select[0] + MAXMainMenu + 1) % MAXMainMenu]);
+			SetFontType(S_FONT_LARGE, S_BLACK, S_BLACK, S_ALIGN_LEFT);
+			DrawStr(70, 170 + Scroll_ShowCounter, Str_MainMenuName[(Status_Select[0] + MAXMainMenu    ) % MAXMainMenu]);
+			SetColor(S_ROSE);
+			DrawRect( 40, 165, 200, 185);
+			/*
+			SetFontType(S_FONT_LARGE, S_BLACK, S_BLACK, S_ALIGN_LEFT);
 			switch(Status_Select[0]){
-				case Menu_Start:
+				case Menu_Normal:
 					DrawStr(10,10,"선택한 메뉴에 대한 장면");
-					DrawStr(30,30,"- 게임 시작");
-	
-					//메뉴 종류 구분
-					switch(Status_Value[4]){
-						case Menu_Main:
-							DrawStr(50,50,"+ 서브 메뉴");
-							break;
+					DrawStr(30,30,"- 일반 모드");
+					break;
 
-						case Menu_SubStart:
-							switch(Status_Select[1]){
-								case Menu_Travel:
-									DrawStr(50,50,"- 여행 모드");
-									break;
+				case Menu_TimeAttack:
+					DrawStr(10,10,"선택한 메뉴에 대한 장면");
+					DrawStr(30,30,"- 타임 어택");
+					break;
 
-								case Menu_Normal:
-									DrawStr(50,50,"- 일반 모드");
-									break;
-
-								case Menu_TimeAttack:
-									DrawStr(50,50,"- 타임 어택");
-									break;
-
-								case Menu_Shop:
-									DrawStr(50,50,"- 아이템 상점");
-							}
-					}
+				case Menu_Shop:
+					DrawStr(10,10,"선택한 메뉴에 대한 장면");
+					DrawStr(30,30,"- 아이템 상점");
 					break;
 
 				case Menu_Guide:
@@ -470,15 +493,22 @@ void ShowSelectPart(){
 					DrawStr(30,30,"- 게임 환경설정");
 					break;
 			}
+			//*/
 			break;
 
 		case 3:
-			MakeStr2(Temp, "NextMode = %d, Frame = %d", Status_Value[3], Status_Value[1]);
-			DrawStr(10,10,"모드 이동");
-			DrawStr(30,30,Temp);
+			if(Status_Value[1] < 2) Status_Value[5] = 1;
+			else if(Status_Value[1] < 4) Status_Value[5] = 2;
+			else if(Status_Value[1] < 8) Status_Value[5] = 3;
+			else Status_Value[5] = 4;
+			if(Status_Value[5] < 4){
+				CopyImageEx(  0, 89, Img_TitleMenuBack, Status_Value[5], 0, 0, 0);
+			}
+			CopyImage( 0, 262, Img_TitleUnderStatusBar);
 			break;
 
 		case 4:
+			CopyImage( 0, 262, Img_TitleUnderStatusBar);
 			Status_GameMode = Status_Value[3];	//초기화전에 먼저 변경(!주의해야함)
 			InitStatusValue();					//초기화 수행
 			return;								//그리고 리턴(!주의해야함:값이 변경 되므로 리턴)
@@ -486,14 +516,6 @@ void ShowSelectPart(){
 	}
 
 	ShowTimer(Status_Value);
-}
-
-void ShowTravel(){
-	ClearWhite();
-	//케릭터 선택 일단 없음 기본케릭터에 얻음 : 구상중..
-	//DrawTravelMap();
-	DrawStr(10,20,"G-T-M : ");
-	return;
 }
 
 /*
@@ -508,6 +530,8 @@ void ShowTravel(){
 
 	Status_Value[2] : 해당 장면의 최대 카운터 [조건:Status_Value[1] == 0 일 경우 설정]
 
+	Status_Value[3] : 투명도
+
 	Status_Select[0] : 선택한 스테이지 메뉴
 
 	//제외 대상
@@ -521,14 +545,16 @@ void ShowNormal(){
 	//기본 배경
 	CopyImage(   0,   0, Img_TitleBackground1);
 	CopyImage(   0, 150, Img_TitleBackground2);
+	//상태표시줄
+	CopyImage( 0, 262, Img_TitleUnderStatusBar);
 
 	//장면의 프레임수 결정
 	if(Status_Value[1] == 0){
 		switch(Status_Value[0]){
-			case 0:		Status_Value[2] = 30;		break;//BACK
-			case 1:		Status_Value[2] = 30;		break;//ITEM
+			case 0:		Status_Value[2] = 15;		break;//BACK
+			case 1:		Status_Value[2] = 15;		break;//ITEM
 			case 2:		Status_Value[2] = -1;		break;//SELECT MENU
-			case 3:		Status_Value[2] = 100;		break;//START ANI
+			case 3:		Status_Value[2] = 100;		break;//START GAME READY
 			case 4:		Status_Value[2] = -1;		break;//PLAY!!
 			case 5:		Status_Value[2] = 30;		break;//SHOW RECORD
 			case 6:		Status_Value[2] = -1;		break;//RECORD
@@ -538,26 +564,55 @@ void ShowNormal(){
 
 	switch(Status_Value[0]){
 		case 0:
-			//화면 열리는 모양
-			DrawStr(10,10,"화면 열리는 모양");
+			GetAnimationPosition(  -1,-100,   0,   0, Status_Value[1], Status_Value[2], Movement_FadeOut, 2, Guide_Straight, 100);
+			CopyImage(UnitReturnPosition.X, UnitReturnPosition.Y, Img_ModeHeader);
+			GetAnimationPosition( 121, 300, 120, 170, Status_Value[1], Status_Value[2], Movement_FadeOut, 2, Guide_Straight, 100);
+			CopyImage(UnitReturnPosition.X, UnitReturnPosition.Y, Img_PreviewTop);
+			CopyImage(UnitReturnPosition.X, UnitReturnPosition.Y, Img_PreviewLeft);
+			CopyImage(UnitReturnPosition.X, UnitReturnPosition.Y, Img_PreviewRight);
+			CopyImage(UnitReturnPosition.X, UnitReturnPosition.Y, Img_PreviewBottom);
 			break;
 		case 1:
-			//구성요소 나타나는 모양
-			DrawStr(10,10,"구성요소 나타나는 모양");
+			CopyImage(  0,   0, Img_ModeHeader);
+			SetColor(S_WHITE);
+			FillRectEx(11, 176, 227, 254, 2);
+			CopyImage(120, 170, Img_PreviewTop);
+			CopyImage(120, 170, Img_PreviewLeft);
+			CopyImage(120, 170, Img_PreviewRight);
+			CopyImage(120, 170, Img_PreviewBottom);
+			if(Status_Value[1] < 2) Status_Value[3] = 3;
+			else if(Status_Value[1] < 4) Status_Value[3] = 2;
+			else if(Status_Value[1] < 8) Status_Value[3] = 1;
+			else Status_Value[3] = 0;
+			CopyImageEx(218,  50, Img_ScrollBar, Status_Value[3], 0, 0, 0);
+			CopyImageEx(218,  50, Img_ScrollButton, Status_Value[3], 0, 0, 0);
 			break;
 		case 2:
 			//스테이지 선택
-			DrawStr(10,10,"일반모드 스테이지 선택");
+			CopyImage(  0,   0, Img_ModeHeader);
+			SetColor(S_WHITE);
+			FillRectEx(11, 176, 227, 254, 2);
+			CopyImage(120, 170, Img_PreviewTop);
+			CopyImage(120, 170, Img_PreviewLeft);
+			CopyImage(120, 170, Img_PreviewRight);
+			CopyImage(120, 170, Img_PreviewBottom);
+			CopyImage(218,  50, Img_ScrollBar);
+			CopyImage(218,  50, Img_ScrollButton);
+
+			SetFontType(S_FONT_LARGE, S_WHITE, S_BLACK, S_ALIGN_LEFT);
+			DrawStr( 15, 15,"노멀 플레이 스테이지 선택");
+			ShowScroll();
 			DrawNormalMenu(Status_Select[0]);
 			DrawPreview(Status_Select[0]);
 			break;
 		case 3:
 			//게임 화면으로 넘어가는 효과
 			DrawStr(10,10,"게임 화면으로 넘어가는 효과");
-			DrawGameNormalStart(Status_Select[0]);
+			DrawGameNormalReady(Status_Select[0]);		//게임 준비를 보여주는 것이고,
 			break;
 		case 4:
 			//게임 플레이!!
+			DrawPlayNormalGame(Status_CurrentStage);	//게임을 하는 겁니다.
 			DrawStr(10,10,"일반 모드 게임 상세 구현");
 			break;
 		case 5:
@@ -598,6 +653,8 @@ void ShowNormal(){
 
 	Status_Select[0] : 진행중 스테이지
 
+	Status_Select[1] : 선택한 메뉴
+
 	//제외 대상
 	케릭터 선택은 일단 생략후 : 난이도별로 열려 있는 스테이지 선택 - 미니맵과 요약해서 미리 보여줌
 	DrawChara(Status_Value[0]);
@@ -615,10 +672,10 @@ void ShowTimeAttack(){
 		switch(Status_Value[0]){
 			case 0:		Status_Value[2] = 30;		break;//BACK
 			case 1:		Status_Value[2] = 30;		break;//ITEM
-			case 2:		Status_Value[2] = 50;		break;//READY
+			case 2:		Status_Value[2] = -1;		break;//READY
 			case 3:		Status_Value[2] = -1;		break;//PLAY!!
 			case 4:		Status_Value[2] = 30;		break;//END STAGE
-			case 5:		Status_Value[2] = -1;		break;//GOTO:READY
+			case 5:		Status_Value[2] = -1;		break;//ASK CONTINUE? GOTO:READY or RECORD
 			case 6:		Status_Value[2] = 30;		break;//SHOW RECORD
 			case 7:		Status_Value[2] = -1;		break;//RECORD
 			case 8:		Status_Value[2] = 20;		break;//HIDE RECORD -> END:Game_SelectPart
@@ -637,11 +694,13 @@ void ShowTimeAttack(){
 		case 2:
 			//타임 어택 준비
 			DrawStr(10,10,"[타임 어택이니까 준비하세요]라고 알려줌");
+			DrawStr(10,30,"그리고 OK버튼 눌러주세요");
 			break;
 		case 3:
 			//타임어택 게임 플레이!!
+			DrawPlayNormalGame(Status_CurrentStage);	//게임을 하는 겁니다.
 			DrawStr(10,10,"타임어택 상세 구현");
-			DrawTimeAttackStatus(Status_Select[0], Status_Value[4]);
+			DrawTimeAttackStatus(Status_Value[4]);
 			if(Status_Value[1] % 20 == 19){
 				Status_Value[4]++;
 			}
@@ -651,9 +710,12 @@ void ShowTimeAttack(){
 			DrawStr(10,10,"스테이지로 종료 - 곧 다음으로");
 			break;
 		case 5:
-			Status_Value[1] = 0;
-			Status_Value[0] = 2;
-			return;
+			//스테이지로 계속하는지 묻기
+			ShowScroll();
+			SetFontType(S_FONT_LARGE, S_BLACK, S_BLACK, S_ALIGN_LEFT);
+			DrawStr(10,10,"스테이지 계속 할꺼예요?");
+			DrawTimeAttackContinue(Status_Select[1]);	//선택지 변수 예-아니오[1]
+			break;
 		case 6:
 			//점수 보기로 넘어가는 효과
 			DrawStr(10,10,"점수 보기로 넘어가는 효과");
@@ -726,25 +788,3 @@ void DrawChara(int CharaIndex){
 	return;
 }
 */
-
-//void InitStage();
-
-
-void ShowStage(){
-	if(Status_Value[0] == 0){
-		//          v  v  v  v -> 절대 위치!!(주의!!)
-		SetStage(0, 2, 3, 0, 0, 13, 11);	//14 * 12 사이즈가 최적임
-		Status_CurrentStage = 0;
-		StartStage(Status_CurrentStage);
-		Status_Value[0] = 1;
-		SetTimer(50, 1);
-	}else if(Status_Value[0] == 1){
-		Clear(S_SKY);
-		DrawStage(Status_CurrentStage
-				, (MaxMapOptimalSizeX - (UnitStage[Status_CurrentStage].EndCellX - UnitStage[Status_CurrentStage].StartCellX)) * 8
-				, (MaxMapOptimalSizeY - (UnitStage[Status_CurrentStage].EndCellY - UnitStage[Status_CurrentStage].StartCellY)) * 8 + Size_TwoHalf);
-		if(Status_Moving == Yes){
-			Status_MoveSuccess = MovePlayer(Status_MovingDirection);
-		}
-	}
-}

@@ -27,10 +27,60 @@ const string Str_NormalStageNote[MaxNormalStage] = {
 	"어질러졌어요! 청소도구를 가져와요"
 };
 
+void InitPlayNormalGame(int Selected){
+	SetStage(0, 2, 3, 0, 0, 13, 11);	//14 * 12 사이즈가 최적임
+	Status_CurrentStage = 0;
+	StartStage(0);
+	SetTimer(50, 1);
+	return;
+}
+
+void DrawPlayNormalGame(int Selected){
+	DrawStage(Selected
+			, (MaxMapOptimalSizeX - (UnitStage[Selected].EndCellX - UnitStage[Selected].StartCellX)) * 8
+			, (MaxMapOptimalSizeY - (UnitStage[Selected].EndCellY - UnitStage[Selected].StartCellY)) * 8 + Size_TwoHalf);
+	if(Status_Moving == Yes){
+		Status_MoveSuccess = MovePlayer(Status_MovingDirection);
+	}
+	return;
+}
+
+void ControlPlayNormalGame(int SysData){
+	if((Status_MovingDirection == SysData && Option_AutoPush == Yes && Status_MoveSuccess == No)
+	|| SysData == SWAP_KEY_OK){
+		PushStone();
+		return;
+	}
+	if(SysData == SWAP_KEY_RELEASE){
+		Status_Moving = No;
+		return;
+	}else{
+		switch(SysData){
+			case SWAP_KEY_UP:
+			case SWAP_KEY_DOWN:
+			case SWAP_KEY_LEFT:
+			case SWAP_KEY_RIGHT:
+				Status_Moving = Yes;
+				Status_MovingDirection = SysData;
+				Status_MoveSuccess = MovePlayer(Status_MovingDirection);
+				break;
+			case SWAP_KEY_OK:
+				Status_MovingDirection = Null;
+				PushStone();
+				break;
+		}
+	}
+	return;
+}
+
 //게임 메뉴출력
 void DrawNormalMenu(int Selected){
 	int i, j;
 
+	SetColor(S_MOON);	
+	FillRectEx(10, 45 + 20 * Selected + Scroll_ShowCounter, 210, 65 + 20 * Selected + Scroll_ShowCounter, 2);
+
+	SetFontType(S_FONT_LARGE, S_BLACK, S_BLACK, S_ALIGN_LEFT);
 	for(i = 0; i < MaxNormalStage; i++){
 		if(Selected != i){
 			DrawStr(20, 50 + 20 * i, Str_NormalStageName[i]);
@@ -39,28 +89,30 @@ void DrawNormalMenu(int Selected){
 		}
 		for(j = 0; j < 5;j++){
 			if(Str_NormalStageStar[i] > j){
-		 		DrawStr(170 + 10 * j, 50 + 20 * i, "★");
+		 		DrawStr(150 + 10 * j, 50 + 20 * i, "★");
 			}else{
-				DrawStr(170 + 10 * j, 50 + 20 * i, "☆");
+				DrawStr(150 + 10 * j, 50 + 20 * i, "☆");
 			}
 		}
 	}
 
-	DrawRect(10, 45 + 20 * Selected, 230, 65 + 20 * Selected);
+	SetColor(S_ROSE);
+	DrawRect(10, 45 + 20 * Selected + Scroll_ShowCounter, 210, 65 + 20 * Selected + Scroll_ShowCounter);
 	
 	return;	
 }
 
 //게임 미리보기
 void DrawPreview(int Selected){
-	SetColor(S_SKY);
-	FillRectEx(10, 180, 230, 290, 2);
-	DrawStr(20, 190, Str_NormalStageNote[Selected]);
+	SetFontType(S_FONT_LARGE, S_BLACK, S_BLACK, S_ALIGN_LEFT);
+	DrawStr(20, 200, Str_NormalStageNote[Selected]);
 }
 
-//게임 시작화면
-void DrawGameNormalStart(int Selected){
+//게임 시작화면 및 준비
+void DrawGameNormalReady(int Selected){
 	int i;
+	
+	SetFontType(S_FONT_LARGE, S_BLACK, S_BLACK, S_ALIGN_LEFT);
 	DrawStr(10, 30, Str_NormalStageName[Selected]);
 	for(i = 0; i < 5;i++){
 		if(Str_NormalStageStar[Selected] > i){

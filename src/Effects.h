@@ -169,7 +169,7 @@ int GetAngle(int BaseX, int BaseY, int TargetX, int TargetY){
 	}
 }
 
-/*
+//*
 //도형 회전
 void RotatePolygon(int *VX, int *VY, int AngleX, int AngleY, int AngleZ, int DgreeX, int DgreeY, int Spread){
 	int TX[4], TY[4];
@@ -183,50 +183,50 @@ void RotatePolygon(int *VX, int *VY, int AngleX, int AngleY, int AngleZ, int Dgr
 		UY = *(VY+i) + Spread;
 		DX = (UX * Sin100(AngleZ)/100 + UY * Cos100(AngleZ)/100);
 		DY = (UX * Cos100(AngleZ)/100 - UY * Sin100(AngleZ)/100);
-		UX = (DX * Sin100(AngleY)/100 + DY * Cos100(AngleY)/100);
-		UY = (DX * Cos100(AngleX)/100 - DY * Sin100(AngleX)/100);
-		TX[i] = UX + DgreeX;
-		TY[i] = UY + DgreeY;
+		
+		UX = (DX * Sin100(AngleX)/100 + DY * Cos100(AngleX)/100);
+
+		DY = (UX * Cos100(AngleY)/100 - UY * Sin100(AngleY)/100);
+
+		
+		TX[i] = DX + DgreeX;
+		TY[i] = DY + DgreeY;
 	}
 	FillPoly(TX, TY, VEdge);		
 }
-*/
+//*/
 
 /*
-void ShowIcon(){
+int MMMM=50;int INC = -1;
+const int Temp3[4] = {-80,  80,   30,  -30};
+const int Temp4[4] = {-80, -80, -130, -130};
+void ShowIcon2(){
 	int i;
-	
-	if(Status_Value1 == 0){
-		Temp1[0] = 00;Temp2[0] = 15;
-		Temp1[1] = 30;Temp2[1] = 00;
-		Temp1[2] = 15;Temp2[2] = 15;
-		Temp1[3] = 30;Temp2[3] = 30;
-	}else if(Status_Value1 < 100){
-		Clear(S_WHITE);
-		if(Status_Value2 < 360) Status_Value2 += 10;
-		else Status_Value2 = 0;
-		SetColorRGB(200,200,200);
-		RotatePolygon(Temp1, Temp2, 4, 240, 100, Status_Value2 +  30, 0, 0);
-		RotatePolygon(Temp1, Temp2, 4, 240, 100, Status_Value2 + 150, 0, 0);
-		RotatePolygon(Temp1, Temp2, 4, 240, 100, Status_Value2 + 270, 0, 0);
-		SetColor(S_SKY);
-		RotatePolygon(Temp1, Temp2, 4, 240, 100, Status_Value2      , 0, 0);
-		RotatePolygon(Temp1, Temp2, 4, 240, 100, Status_Value2 + 120, 0, 0);
-		RotatePolygon(Temp1, Temp2, 4, 240, 100, Status_Value2 + 240, 0, 0);
-	
-		CopyImage(110, 170, Img_AhyaneIcon);
-		SetFontType(S_FONT_MEDIUM, S_BLACK, S_BLACK, S_ALIGN_CENTER);
-		DrawStr(120, 270, "Ahyane");
-		DrawStr(120, 280, "- 2009.2 -");
-		DrawStr(120, 290, "http://www.ahyane.net");
+	int Temp;	
+
+
+	if(Status_Value[0] == 0){
+		Temp1[0] =-4;Temp2[0] =- 30;
+		Temp1[1] = 4;Temp2[1] =- 30;
+		Temp1[2] = 6;Temp2[2] =- 35;
+		Temp1[3] =-6;Temp2[3] =- 35;
+	}else if(Status_Value[0] < 10000){
+		ClearWhite();
+		if(Status_Value[1] < 360) Status_Value[1] += 24;
+		else Status_Value[1] = 0;
+
+		for(i = 0; i < 40; i++){
+			SetColorRGB(250, i + 180, i + 200);
+			RotatePolygon(Temp1, Temp2, 0, 120, -Status_Value[1] + i * 10, 120, 100, -i*2);
+		}
 
 	}else{
 		Clear(S_WHITE);
-		Status_Value1 = 0;
-		Status_Value2 = 0;
-		Status_GameMode = Game_Title;
+		Status_Value[0] = 0;
+		Status_Value[1] = 0;
+		//Status_GameMode = Game_Title;
 		return;
 	}
-	Status_Value1++;	//타이머용
+	Status_Value[0]++;	//타이머용
 }
-*/
+//*/

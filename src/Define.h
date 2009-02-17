@@ -36,6 +36,10 @@
 #define D_MapSCM	15
 #define D_MapSCU	3
 
+//메뉴 스크롤 단위 24에서 2를 나누며 증감
+#define MaxShowScroll			20
+#define MaxShowScrollCounting	8
+
 //각 갯수별 셀의 사이즈
 #define Size_Half		8
 #define Size_One		16

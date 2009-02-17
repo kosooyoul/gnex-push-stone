@@ -47,84 +47,53 @@ void ControlSelectPart(int SysData){
 			Status_Value[1] = 0;
 		}
 	}else if(Status_Value[0] == 2){
-		//메뉴 종류
-		switch(Status_Value[4]){
-			case Menu_Main:
-				switch(SysData){
-					case SWAP_KEY_OK:
-						//선택한 메인 메뉴 구분
-						switch(Status_Select[0]){
-							case Menu_Start:
-								//게임 시작 하위 메뉴
-								Status_Value[4] = Menu_SubStart;
-								return;
-							case Menu_Guide:
-								//도움말 모드
-								Status_Value[3] = Game_Guide;
-								break;
-							case Menu_Record:
-								//기록 보기 모드
-								Status_Value[3] = Game_Record;
-								break;
-							case Menu_Option:
-								//환경 설정 모드
-								Status_Value[3] = Game_Option;
-						}
-						//모드 이동 시키는 장면
-						Status_Value[1] = 0;
-						Status_Value[0] = 3;
+		switch(SysData){
+			case SWAP_KEY_OK:
+				//선택한 메인 메뉴 구분
+				switch(Status_Select[0]){
+					case Menu_Normal:
+						//게임 일반 모드
+						Status_Value[3] = Game_Normal;
 						break;
-					case SWAP_KEY_LEFT:
-						Status_Select[0] = (Status_Select[0] + 3) % 4;
+					case Menu_TimeAttack:
+						//게임 타임어택 모드
+						Status_Value[3] = Game_TimeAttack;
 						break;
-					case SWAP_KEY_RIGHT:
-						Status_Select[0] = (Status_Select[0] + 1) % 4;
+					case Menu_Shop:
+						//게임 상점 모드
+						Status_Value[3] = Game_Shop;
+						break;
+					case Menu_Guide:
+						//도움말 모드
+						Status_Value[3] = Game_Guide;
+						break;
+					case Menu_Record:
+						//기록 보기 모드
+						Status_Value[3] = Game_Record;
+						break;
+					case Menu_Option:
+						//환경 설정 모드
+						Status_Value[3] = Game_Option;
 				}
+				//모드 이동 시키는 장면
+				Status_Value[1] = 0;
+				Status_Value[0] = 3;
 				break;
-			case Menu_SubStart:
-				switch(SysData){
-					case SWAP_KEY_OK:
-						//선택한 서브 메뉴 구분
-						switch(Status_Select[1]){
-							case Menu_Travel:
-								//게임 여행 모드
-								Status_Value[3] = Game_Travel;
-								break;
-							case Menu_Normal:
-								//게임 일반 모드
-								Status_Value[3] = Game_Normal;
-								break;
-							case Menu_TimeAttack:
-								//게임 타임어택 모드
-								Status_Value[3] = Game_TimeAttack;
-								break;
-							case Menu_Shop:
-								//게임 상점 모드
-								Status_Value[3] = Game_Shop;
-						}
-						//모드 이동 시키는 장면
-						Status_Value[1] = 0;
-						Status_Value[0] = 3;
-						break;
-					case SWAP_KEY_LEFT:
-						Status_Select[1] = (Status_Select[1] + 3) % 4;
-						break;
-					case SWAP_KEY_RIGHT:
-						Status_Select[1] = (Status_Select[1] + 1) % 4;
-						break;
-					case SWAP_KEY_CLR:
-						Status_Value[4] = Menu_Main;
-				}
+			case SWAP_KEY_UP:
+			case SWAP_KEY_LEFT:
+				//스크롤 중 메뉴 변경
+				//if(Scroll_ShowCounter == 0){
+					Status_Select[0] = (Status_Select[0] + MAXMainMenu - 1) % MAXMainMenu;
+					Scroll_ShowCounter = -MaxShowScroll;
+				//}
+				break;
+			case SWAP_KEY_DOWN:
+			case SWAP_KEY_RIGHT:
+				//if(Scroll_ShowCounter == 0){
+					Status_Select[0] = (Status_Select[0] + 1) % MAXMainMenu;
+					Scroll_ShowCounter = MaxShowScroll;
+				//}
 		}
-	}
-	return;
-}
-
-void ControlTravel(int SysData){
-	//MoveTravelMap(SysData);
-	switch(SysData){
-		case SWAP_KEY_CLR:
-			Status_GameMode = Game_SelectPart;
 	}
 	return;
 }
@@ -143,16 +112,25 @@ void ControlNormal(int SysData){
 			switch(SysData){
 				case SWAP_KEY_OK:
 					//메뉴선택 함
-					Status_CurrentStage = Status_Select[0];
+					InitPlayNormalGame(Status_Select[0]);
 					Status_Value[1] = 0;
 					Status_Value[0] = 3;
 					break;
 					//메뉴 고르기
 				case SWAP_KEY_UP:
-					Status_Select[0] = (Status_Select[0] - 1 + MaxNormalStage) % MaxNormalStage;
+				case SWAP_KEY_LEFT:
+					//스크롤 중 메뉴 변경
+					//if(Scroll_ShowCounter == 0){
+						Status_Select[0] = (Status_Select[0] - 1 + MaxNormalStage) % MaxNormalStage;
+						Scroll_ShowCounter = MaxShowScroll;
+					//}
 					break;
 				case SWAP_KEY_DOWN:
-					Status_Select[0] = (Status_Select[0] + 1) % MaxNormalStage;
+				case SWAP_KEY_RIGHT:
+					//if(Scroll_ShowCounter == 0){
+						Status_Select[0] = (Status_Select[0] + 1) % MaxNormalStage;
+						Scroll_ShowCounter = -MaxShowScroll;
+					//}
 					break;
 					//취소 및 이전
 				case SWAP_KEY_CLR:
@@ -168,8 +146,9 @@ void ControlNormal(int SysData){
 			}
 			break;
 		case 4://게임 플레이!!
+			ControlPlayNormalGame(SysData);
 			switch(SysData){
-				case SWAP_KEY_OK:
+				case SWAP_KEY_CLR:
 					Status_Value[1] = 0;
 					Status_Value[0] = 5;
 			}
@@ -194,21 +173,54 @@ void ControlTimeAttack(int SysData){
 				Status_Value[1] = 0;
 			}
 			break;
-		case 3://게임 시작화면
-			switch(SysData){
-				//임시 다음 스테이지
-				case SWAP_KEY_OK:
-					Status_Select[0]++;	//다음 스테이지
-					Status_Value[1] = 0;
-					Status_Value[0] = 4;
-					break;
-				//임시 점수보기로
-				case SWAP_KEY_CLR:
-					Status_Value[1] = 0;
-					Status_Value[0] = 6;
+		case 2:
+			if(SysData == SWAP_KEY_OK){
+				//다음 스테이지로 설정
+				InitPlayNormalGame(Status_Select[0]);
+				Status_Value[0] = 3;
+				Status_Value[1] = 0;
 			}
 			break;
-
+		case 3:
+			//게임 플레이!!
+			ControlPlayNormalGame(SysData);
+			switch(SysData){
+				case SWAP_KEY_CLR:
+					//임시-스테이지 스킵
+					Status_Value[0] = 4;
+					Status_Value[1] = 0;
+					break;
+			}
+			break;
+		case 5://계속 할거야?
+			switch(SysData){
+				case SWAP_KEY_OK:
+					//예-아니오 메뉴 번호[1]
+					if(Status_Select[1] == 0){
+						Status_Select[0]++;		//다음 스테이지[0]
+						Status_Value[0] = 2;
+					}else{
+						Status_Value[0] = 6;
+					}
+					Status_Value[1] = 0;
+					break;
+				case SWAP_KEY_UP:
+				case SWAP_KEY_LEFT:
+				case SWAP_KEY_DOWN:
+				case SWAP_KEY_RIGHT:
+					//스크롤 중 메뉴 변경
+					////스크롤 중이 아닐때 선택 변경 가능
+					//if(Scroll_ShowCounter == 0){
+						Status_Select[1] = 1 - Status_Select[1];
+						//2개 항목이므로 선택 번호에 따라 스크롤값 부여
+						if(Status_Select[1] == 0){
+							Scroll_ShowCounter = MaxShowScroll;
+						}else{
+							Scroll_ShowCounter = -MaxShowScroll;
+						}
+					//}
+			}
+			break;
 		case 7://점수 보기
 			switch(SysData){
 				case SWAP_KEY_OK:
@@ -269,31 +281,3 @@ int SelectChara(int NowChara, int SysData){
 	return SelectedChara;
 }
 */
-
-void ControlStage(int SysData){
-	if((Status_MovingDirection == SysData && Option_AutoPush == Yes && Status_MoveSuccess == No)
-	|| SysData == SWAP_KEY_OK){
-		PushStone();
-		return;
-	}
-
-	if(SysData == SWAP_KEY_RELEASE){
-		Status_Moving = No;
-		return;
-	}else{
-		switch(SysData){
-			case SWAP_KEY_UP:
-			case SWAP_KEY_DOWN:
-			case SWAP_KEY_LEFT:
-			case SWAP_KEY_RIGHT:
-				Status_Moving = Yes;
-				Status_MovingDirection = SysData;
-				Status_MoveSuccess = MovePlayer(Status_MovingDirection);
-				break;
-			case SWAP_KEY_OK:
-				Status_MovingDirection = Null;
-				PushStone();
-				break;
-		}
-	}
-}
