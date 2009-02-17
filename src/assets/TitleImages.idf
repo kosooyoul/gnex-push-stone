@@ -7,7 +7,7 @@
 /*		, Hotspot X, Hotspot Y, BlockInfo, BlockIdx, Transparent, Transparent Color       */
 /*                                                                           */
 /* First written : Saturday, February 14, 2004 18:14:05			     */
-/* Last modified : Sunday, February 15, 2004 19:53:57			     */
+/* Last modified : Wednesday, February 18, 2004 01:54:57			     */
 /*                                                                           */
 /* Copyright(c) 2000~2007 Sinjisoft Corporation.  All rights reserved.       */
 /*****************************************************************************/
@@ -15,30 +15,27 @@
 IDF3
 BlockSizeExtension=0
 Image=Title.bmp
-Img_TitleBackground1,11,0,1,240,150,0,0,0,1,0,2134048
-Img_TitleBackground2,12,0,151,240,150,0,0,0,22,0,2134048
-Img_TitleStone,12,243,168,111,133,0,0,0,9,1,16253176
-Img_TitleWord1,12,357,216,108,38,0,0,0,10,1,16253176
-Img_TitleWord2,12,385,262,140,39,-28,-46,0,11,1,16253176
-Img_TitleNumberGray1,11,357,121,12,23,0,0,0,5,0,2134048
-Img_TitleNumberGray2,12,357,154,17,23,0,-33,0,12,1,16253176
-Img_TitleNumberGray3,11,357,187,17,24,0,-66,0,13,0,2134048
-Img_TitleMenuGray1,12,378,120,60,24,-21,1,0,14,1,16253176
-Img_TitleMenuGray2,12,381,152,84,26,-24,-31,0,15,1,16253176
-Img_TitleMenuGray3,12,380,185,85,29,-23,-64,0,16,1,16253176
-Img_TitleNumberColor1,12,467,121,12,23,0,0,0,6,0,2134048
-Img_TitleNumberColor2,12,467,154,17,23,0,-33,0,17,1,16253176
-Img_TitleNumberColor3,12,467,187,17,24,0,-66,0,18,0,2134048
-Img_TitleMenuColor1,12,488,120,60,24,-21,1,0,19,1,16253176
-Img_TitleMenuColor2,12,491,152,84,26,-24,-31,0,20,1,16253176
-Img_TitleMenuColor3,12,490,185,85,29,-23,-64,0,21,1,16253176
-Img_TitleOkSelect,12,243,155,63,10,0,0,0,8,1,16253176
-Img_TitleBlock,12,241,1,33,31,0,0,0,24,1,16317440
-Img_TitleCopyright,9,275,2,8,8,10,0,0,25,1,16253176
-Img_TitleWWW,9,275,15,19,4,20,-3,0,26,1,16253176
-Img_TitleAHYANE,9,285,2,30,9,0,0,0,31,1,16253176
-Img_TitleNET,9,326,13,16,6,-31,-1,0,27,1,16253176
-Img_TitlePress,9,275,22,29,7,0,0,0,28,1,16253176
-Img_TitleOk,9,311,22,11,7,-36,0,0,29,1,16253176
-Img_TitleButton,9,329,22,35,7,-54,0,0,30,1,16253176
+Img_TitleBackground1,12,1,1,240,150,0,0,0,1,0,2134048
+Img_TitleBackground2,12,1,151,240,150,0,0,0,22,0,2134048
+Img_TitleWord1,12,242,33,104,36,0,0,0,10,1,16317440
+Img_TitleWord2,12,312,74,136,36,-70,-41,0,11,1,16317440
+Img_TitleBlock,12,242,1,33,31,0,0,0,24,1,16317440
+Img_TitleCopyright,9,276,2,8,8,10,0,0,25,1,16253176
+Img_TitleWWW,9,276,15,19,4,20,-3,0,26,1,16253176
+Img_TitleAHYANE,9,286,2,30,9,0,0,0,31,1,16253176
+Img_TitleNET,9,327,13,16,6,-31,-1,0,27,1,16253176
+Img_TitlePress,9,276,22,29,7,0,0,0,28,1,16253176
+Img_TitleOk,9,312,22,11,7,-36,0,0,29,1,16253176
+Img_TitleButton,9,330,22,35,7,-54,0,0,30,1,16253176
+Img_TitleStar1,11,244,88,20,20,0,0,0,8,1,16317440
+Img_TitleStar2,11,265,88,20,20,0,0,0,32,1,16317440
+Img_TitleMenuBack,12,247,112,226,173,-5,-1,0,9,1,16317440
+Img_TitleUnderStatusBar,12,242,287,242,36,0,0,0,33,0,16317440
+Img_ScrollBar,11,485,72,16,114,0,0,0,34,1,0
+Img_ScrollButton,12,503,174,14,13,-1,-1,0,35,1,0
+Img_ModeHeader,12,485,287,240,41,0,0,0,36,0,2134048
+Img_PreviewTop,12,489,194,230,5,114,0,0,37,1,8422400
+Img_PreviewLeft,12,488,199,5,83,115,-5,0,38,1,8422400
+Img_PreviewBottom,12,493,279,223,5,110,-85,0,39,1,8422400
+Img_PreviewRight,12,712,199,6,80,-109,-5,0,40,1,8422400
 
