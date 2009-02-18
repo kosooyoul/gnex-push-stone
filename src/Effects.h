@@ -43,9 +43,9 @@ void GetAnimationPosition(int StartX, int StartY, int EndX, int EndY, int Curren
 	}
 	
 	//Other	
-	Length = Sqrt(((EndX - StartX) * (EndX - StartX) + (EndY - StartY) * (EndY - StartY)));
 	Angle = GetAngle(StartX, StartY, EndX, EndY);
-	
+	Length = Sqrt(((EndX - StartX) * (EndX - StartX) + (EndY - StartY) * (EndY - StartY)));
+
 	//속도선택
 	switch(MovementType){
 		case Movement_Straight:
@@ -117,7 +117,7 @@ void GetAnimationPosition(int StartX, int StartY, int EndX, int EndY, int Curren
 	GetRotatePoint(TempPoint.X, TempPoint.Y, Angle);
 	UnitReturnPosition.X = StartX + UnitRotated.X;
 	UnitReturnPosition.Y = StartY + UnitRotated.Y;
-
+	
 	return;
 }
 

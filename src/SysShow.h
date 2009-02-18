@@ -9,6 +9,26 @@ int Scroll_ShowCounter = 0;
 #include "GameNormal.h"
 #include "GameTimeAttack.h"
 
+#define MaxStrHeaderTitle	4
+
+const string Str_HeaderTitle[MaxStrHeaderTitle] = {
+	"노멀 플레이 스테이지 선택",
+	"노멀 플레이",
+	"타임 어택 스테이지 선택",
+	"타임 어택"
+};
+
+void ShowStrHeaderTitle(int Index){
+	SetFontType(S_FONT_LARGE, S_DEEPVIOLET, S_BLACK, S_ALIGN_LEFT);
+	DrawStr( 15, 14, Str_HeaderTitle[Index]);
+	DrawStr( 14, 15, Str_HeaderTitle[Index]);
+	SetFontColor(S_BLOOD, S_BLACK);
+	DrawStr( 15, 16, Str_HeaderTitle[Index]);
+	DrawStr( 16, 15, Str_HeaderTitle[Index]);
+	SetFontColor(S_WHITE, S_BLACK);
+	DrawStr( 15, 15, Str_HeaderTitle[Index]);
+}
+
 void ShowScroll(){
 	if(Scroll_ShowCounter > 0){
 		Scroll_ShowCounter -= Scroll_ShowCounter * 2 / MaxShowScrollCounting+1;
@@ -31,7 +51,12 @@ void ShowTimer(int *In_Status){
 	return;
 }
 
-void ShowBaseBack(){
+void ShowBackGround(){
+	CopyImage(   0,   0, Img_TitleBackground1);
+	CopyImage(   0, 150, Img_TitleBackground2);
+}
+
+void ShowBaseTitle(){
 	CopyImage( 18,  16, Img_TitleWord1);
 	CopyImage( 18,  16, Img_TitleWord2);
 	CopyImage( 14,  37, Img_TitleStar1);
@@ -39,6 +64,19 @@ void ShowBaseBack(){
 	CopyImage(110,  82, Img_TitleStar1);
 	CopyImage(169,  51, Img_TitleStar2);
 	CopyImage(213,  47, Img_TitleStar1);
+}
+
+void ShowImageReady(){
+	CopyImage(  0,   0, Img_ModeHeader);
+	CopyImage(   0,  41, Img_GameReady1);
+	CopyImageEx( 240, 261, Img_GameReady1, 0, 0, 0, 2);
+	CopyImageEx(-100, 112, Img_GameReady1, 3, 0, 0, 0);
+	CopyImageEx( 340, 190, Img_GameReady1, 3, 0, 0, 2);
+}
+
+void ShowScrollBar(int MaxCount, int CurrentCount){
+	CopyImage(218,  50, Img_ScrollBar);
+	CopyImage(218,  50 + CurrentCount * 100 / (MaxCount - 1) + Scroll_ShowCounter, Img_ScrollButton);
 }
 
 /*
@@ -275,8 +313,7 @@ void ShowTitle(){
 	ClearWhite();
 	
 	//기본 배경
-	CopyImage(   0,   0, Img_TitleBackground1);
-	CopyImage(   0, 150, Img_TitleBackground2);
+	ShowBackGround();
 
 	//장면의 프레임수 결정
 	if(Status_Value[1] == 0){
@@ -328,11 +365,11 @@ void ShowTitle(){
 			break;
 		
 		case 4:
-			ShowBaseBack();
+			ShowBaseTitle();
 			break;
 		
 		case 5:
-			ShowBaseBack();
+			ShowBaseTitle();
 			GetAnimationPosition( 110, 150, -20, 170, Status_Value[1], Status_Value[2], Movement_FadeIn, 4, Guide_RightCurve, 100);
 			CopyImage(UnitReturnPosition.X, UnitReturnPosition.Y, Img_TitleStar1);
 			GetAnimationPosition( 110, 150, 240, 170, Status_Value[1], Status_Value[2], Movement_FadeIn, 4, Guide_RightCurve, 100);
@@ -348,7 +385,7 @@ void ShowTitle(){
 			break;
 
 		case 6:
-			ShowBaseBack();
+			ShowBaseTitle();
 
 			if(Status_Value[4] < 360) Status_Value[4] += 24;
 			else Status_Value[4] = 0;
@@ -373,7 +410,7 @@ void ShowTitle(){
 			return;
 		
 		case 8:
-			ShowBaseBack();
+			ShowBaseTitle();
 			InitStatusValue();
 			Status_GameMode = Game_SelectPart;
 			return;
@@ -414,9 +451,8 @@ void ShowSelectPart(){
 	ClearWhite();
 	
 	//기본 배경
-	CopyImage(   0,   0, Img_TitleBackground1);
-	CopyImage(   0, 150, Img_TitleBackground2);
-	ShowBaseBack();
+	ShowBackGround();
+	ShowBaseTitle();
 
 	//장면의 프레임수 결정
 	if(Status_Value[1] == 0){
@@ -540,11 +576,11 @@ void ShowSelectPart(){
 
 */
 void ShowNormal(){
+	int i;
 	ClearWhite();
-	
-	//기본 배경
-	CopyImage(   0,   0, Img_TitleBackground1);
-	CopyImage(   0, 150, Img_TitleBackground2);
+
+	if(Status_Value[0] != 5) ShowBackGround();	
+
 	//상태표시줄
 	CopyImage( 0, 262, Img_TitleUnderStatusBar);
 
@@ -554,26 +590,28 @@ void ShowNormal(){
 			case 0:		Status_Value[2] = 15;		break;//BACK
 			case 1:		Status_Value[2] = 15;		break;//ITEM
 			case 2:		Status_Value[2] = -1;		break;//SELECT MENU
-			case 3:		Status_Value[2] = 100;		break;//START GAME READY
-			case 4:		Status_Value[2] = -1;		break;//PLAY!!
-			case 5:		Status_Value[2] = 30;		break;//SHOW RECORD
-			case 6:		Status_Value[2] = -1;		break;//RECORD
-			case 7:		Status_Value[2] = 20;		break;//HIDE RECORD -> 8:GOTO 0
+			case 3:		Status_Value[2] = 20;		break;//SHOW READY
+			case 4:		Status_Value[2] = 300;		break;//GAME READY
+			case 5:		Status_Value[2] = -1;		break;//PLAY!!
+			case 6:		Status_Value[2] = 20;		break;//SHOW RECORD
+			case 7:		Status_Value[2] = -1;		break;//RECORD
+			case 8:		Status_Value[2] = 20;		break;//HIDE RECORD -> 8:GOTO 0
 		}
 	}
 
 	switch(Status_Value[0]){
 		case 0:
 			GetAnimationPosition(  -1,-100,   0,   0, Status_Value[1], Status_Value[2], Movement_FadeOut, 2, Guide_Straight, 100);
-			CopyImage(UnitReturnPosition.X, UnitReturnPosition.Y, Img_ModeHeader);
+			CopyImage(0, UnitReturnPosition.Y, Img_ModeHeader);
 			GetAnimationPosition( 121, 300, 120, 170, Status_Value[1], Status_Value[2], Movement_FadeOut, 2, Guide_Straight, 100);
-			CopyImage(UnitReturnPosition.X, UnitReturnPosition.Y, Img_PreviewTop);
-			CopyImage(UnitReturnPosition.X, UnitReturnPosition.Y, Img_PreviewLeft);
-			CopyImage(UnitReturnPosition.X, UnitReturnPosition.Y, Img_PreviewRight);
-			CopyImage(UnitReturnPosition.X, UnitReturnPosition.Y, Img_PreviewBottom);
+			CopyImage(120, UnitReturnPosition.Y, Img_PreviewTop);
+			CopyImage(120, UnitReturnPosition.Y, Img_PreviewLeft);
+			CopyImage(120, UnitReturnPosition.Y, Img_PreviewRight);
+			CopyImage(120, UnitReturnPosition.Y, Img_PreviewBottom);
 			break;
 		case 1:
 			CopyImage(  0,   0, Img_ModeHeader);
+			ShowStrHeaderTitle(0);
 			SetColor(S_WHITE);
 			FillRectEx(11, 176, 227, 254, 2);
 			CopyImage(120, 170, Img_PreviewTop);
@@ -591,46 +629,61 @@ void ShowNormal(){
 			//스테이지 선택
 			CopyImage(  0,   0, Img_ModeHeader);
 			SetColor(S_WHITE);
-			FillRectEx(11, 176, 227, 254, 2);
+			FillRectEx(11, 175, 228, 254, 2);
 			CopyImage(120, 170, Img_PreviewTop);
 			CopyImage(120, 170, Img_PreviewLeft);
 			CopyImage(120, 170, Img_PreviewRight);
 			CopyImage(120, 170, Img_PreviewBottom);
-			CopyImage(218,  50, Img_ScrollBar);
-			CopyImage(218,  50, Img_ScrollButton);
+			ShowScrollBar(MaxNormalStage, Status_Select[0]);
 
-			SetFontType(S_FONT_LARGE, S_WHITE, S_BLACK, S_ALIGN_LEFT);
-			DrawStr( 15, 15,"노멀 플레이 스테이지 선택");
+			ShowStrHeaderTitle(0);
 			ShowScroll();
 			DrawNormalMenu(Status_Select[0]);
 			DrawPreview(Status_Select[0]);
 			break;
 		case 3:
-			//게임 화면으로 넘어가는 효과
-			DrawStr(10,10,"게임 화면으로 넘어가는 효과");
-			DrawGameNormalReady(Status_Select[0]);		//게임 준비를 보여주는 것이고,
+			CopyImage(  0,   0, Img_ModeHeader);
+			ShowStrHeaderTitle(1);
+			GetAnimationPosition(-100,  40,    0,  41, Status_Value[1], Status_Value[2], Movement_FadeOut, 3, Guide_Straight, 100);
+			CopyImage(UnitReturnPosition.X, 41, Img_GameReady1);
+			GetAnimationPosition( 350, 260,  240, 261, Status_Value[1], Status_Value[2], Movement_FadeOut, 3, Guide_Straight, 100);
+			CopyImageEx(UnitReturnPosition.X, 261, Img_GameReady1, 0, 0, 0, 2);
+			GetAnimationPosition(-300, 111, -100, 112, Status_Value[1], Status_Value[2], Movement_FadeOut, 2, Guide_Straight, 100);
+			CopyImageEx(UnitReturnPosition.X, 112, Img_GameReady1, 3, 0, 0, 0);
+			GetAnimationPosition( 550, 189,  340, 190, Status_Value[1], Status_Value[2], Movement_FadeOut, 1, Guide_Straight, 100);
+			CopyImageEx(UnitReturnPosition.X, 190, Img_GameReady1, 3, 0, 0, 2);
 			break;
 		case 4:
-			//게임 플레이!!
-			DrawPlayNormalGame(Status_CurrentStage);	//게임을 하는 겁니다.
-			DrawStr(10,10,"일반 모드 게임 상세 구현");
-			break;
+			CopyImage(  0,   0, Img_ModeHeader);
+			ShowImageReady();
+			ShowStrHeaderTitle(1);
+			//게임 화면으로 넘어가는 효과
+			DrawGameNormalReady(Status_CurrentStage);	//게임 준비를 보여주는 것
+			break;	
 		case 5:
-			//점수 보기로 넘어가는 효과
-			DrawStr(10,10,"점수 보기로 넘어가는 효과");
+			CopyImage(  0,   0, Img_ModeHeader);
+			ShowStrHeaderTitle(1);
+			//게임 플레이!!
+			DrawPlayNormalGame(Status_CurrentStage);	//게임을 하는 것
 			break;
 		case 6:
-			//점수 보기
-			DrawStr(10,10,"점수 보기");
+			//점수 보기로 넘어가는 효과
+			SetFontType(S_FONT_LARGE, S_BLACK, S_BLACK, S_ALIGN_LEFT);
+			DrawStr(10,10,"점수 보기로 넘어가는 효과");
 			break;
 		case 7:
-			//점수보기 사라지는 효과
-			DrawStr(10,10,"점수보기 사라지는 효과");
+			//점수 보기
+			SetFontType(S_FONT_LARGE, S_BLACK, S_BLACK, S_ALIGN_LEFT);
+			DrawStr(10,10,"점수 보기");
 			break;
 		case 8:
+			//점수보기 사라지는 효과
+			SetFontType(S_FONT_LARGE, S_BLACK, S_BLACK, S_ALIGN_LEFT);
+			DrawStr(10,10,"점수보기 사라지는 효과");
+			break;
+		case 9:
 			//이번 모드 다시 시작
-			Status_Value[1] = 0;
-			Status_Value[0] = 0;
+			ControlMoveFrame(0);
 			return;
 	}
 
@@ -667,71 +720,115 @@ void ShowTimeAttack(){
 	CopyImage(   0,   0, Img_TitleBackground1);
 	CopyImage(   0, 150, Img_TitleBackground2);
 
+	//상태표시줄
+	CopyImage( 0, 262, Img_TitleUnderStatusBar);
+
 	//장면의 프레임수 결정
 	if(Status_Value[1] == 0){
 		switch(Status_Value[0]){
-			case 0:		Status_Value[2] = 30;		break;//BACK
-			case 1:		Status_Value[2] = 30;		break;//ITEM
-			case 2:		Status_Value[2] = -1;		break;//READY
-			case 3:		Status_Value[2] = -1;		break;//PLAY!!
-			case 4:		Status_Value[2] = 30;		break;//END STAGE
-			case 5:		Status_Value[2] = -1;		break;//ASK CONTINUE? GOTO:READY or RECORD
-			case 6:		Status_Value[2] = 30;		break;//SHOW RECORD
+			case 0:		Status_Value[2] = 15;		break;//BACK
+			case 1:		Status_Value[2] = 15;		break;//ITEM
+			case 2:		Status_Value[2] = -1;		break;//SELECT MENU
+			case 3:		Status_Value[2] = 20;		break;//SHOW READY
+			case 4:		Status_Value[2] = 300;		break;//GAME READY
+			case 5:		Status_Value[2] = -1;		break;//PLAY!!
+			case 6:		Status_Value[2] = 20;		break;//SHOW RECORD
 			case 7:		Status_Value[2] = -1;		break;//RECORD
-			case 8:		Status_Value[2] = 20;		break;//HIDE RECORD -> END:Game_SelectPart
+			case 8:		Status_Value[2] = 20;		break;//HIDE RECORD -> 8:GOTO 0
 		}
 	}
 
+
 	switch(Status_Value[0]){
 		case 0:
-			//화면 열리는 모양
-			DrawStr(10,10,"화면 열리는 모양");
+			GetAnimationPosition(  -1,-100,   0,   0, Status_Value[1], Status_Value[2], Movement_FadeOut, 2, Guide_Straight, 100);
+			CopyImage(0, UnitReturnPosition.Y, Img_ModeHeader);
+			GetAnimationPosition( 121, 300, 120, 170, Status_Value[1], Status_Value[2], Movement_FadeOut, 2, Guide_Straight, 100);
+			CopyImage(120, UnitReturnPosition.Y, Img_PreviewTop);
+			CopyImage(120, UnitReturnPosition.Y, Img_PreviewLeft);
+			CopyImage(120, UnitReturnPosition.Y, Img_PreviewRight);
+			CopyImage(120, UnitReturnPosition.Y, Img_PreviewBottom);
 			break;
 		case 1:
-			//구성요소 나타나는 모양
-			DrawStr(10,10,"구성요소 나타나는 모양");
+			CopyImage(  0,   0, Img_ModeHeader);
+			ShowStrHeaderTitle(2);
+			SetColor(S_WHITE);
+			FillRectEx(11, 176, 227, 254, 2);
+			CopyImage(120, 170, Img_PreviewTop);
+			CopyImage(120, 170, Img_PreviewLeft);
+			CopyImage(120, 170, Img_PreviewRight);
+			CopyImage(120, 170, Img_PreviewBottom);
+			if(Status_Value[1] < 2) Status_Value[3] = 3;
+			else if(Status_Value[1] < 4) Status_Value[3] = 2;
+			else if(Status_Value[1] < 8) Status_Value[3] = 1;
+			else Status_Value[3] = 0;
+			CopyImageEx(218,  50, Img_ScrollBar, Status_Value[3], 0, 0, 0);
+			CopyImageEx(218,  50, Img_ScrollButton, Status_Value[3], 0, 0, 0);
 			break;
 		case 2:
-			//타임 어택 준비
-			DrawStr(10,10,"[타임 어택이니까 준비하세요]라고 알려줌");
-			DrawStr(10,30,"그리고 OK버튼 눌러주세요");
+			//스테이지 선택
+			CopyImage(  0,   0, Img_ModeHeader);
+			SetColor(S_WHITE);
+			FillRectEx(11, 175, 228, 254, 2);
+			CopyImage(120, 170, Img_PreviewTop);
+			CopyImage(120, 170, Img_PreviewLeft);
+			CopyImage(120, 170, Img_PreviewRight);
+			CopyImage(120, 170, Img_PreviewBottom);
+			ShowScrollBar(MaxNormalStage, Status_Select[0]);
+
+			ShowStrHeaderTitle(2);
+			ShowScroll();
+			DrawNormalMenu(Status_Select[0]);
+			DrawPreview(Status_Select[0]);
 			break;
 		case 3:
-			//타임어택 게임 플레이!!
-			DrawPlayNormalGame(Status_CurrentStage);	//게임을 하는 겁니다.
-			DrawStr(10,10,"타임어택 상세 구현");
+			CopyImage(  0,   0, Img_ModeHeader);
+			ShowStrHeaderTitle(3);
+			GetAnimationPosition(-100,  40,    0,  41, Status_Value[1], Status_Value[2], Movement_FadeOut, 3, Guide_Straight, 100);
+			CopyImage(UnitReturnPosition.X, 41, Img_GameReady1);
+			GetAnimationPosition( 350, 260,  240, 261, Status_Value[1], Status_Value[2], Movement_FadeOut, 3, Guide_Straight, 100);
+			CopyImageEx(UnitReturnPosition.X, 261, Img_GameReady1, 0, 0, 0, 2);
+			GetAnimationPosition(-300, 111, -100, 112, Status_Value[1], Status_Value[2], Movement_FadeOut, 2, Guide_Straight, 100);
+			CopyImageEx(UnitReturnPosition.X, 112, Img_GameReady1, 3, 0, 0, 0);
+			GetAnimationPosition( 550, 189,  340, 190, Status_Value[1], Status_Value[2], Movement_FadeOut, 1, Guide_Straight, 100);
+			CopyImageEx(UnitReturnPosition.X, 190, Img_GameReady1, 3, 0, 0, 2);
+			break;
+		case 4:
+			//타임 어택 준비
+			CopyImage(  0,   0, Img_ModeHeader);
+			ShowImageReady();
+			ShowStrHeaderTitle(3);
+			//게임 화면으로 넘어가는 효과
+			DrawGameNormalReady(Status_CurrentStage);	//게임 준비를 보여주는 것
+			break;
+		case 5:
+			CopyImage(  0,   0, Img_ModeHeader);
+			ShowStrHeaderTitle(2);
 			DrawTimeAttackStatus(Status_Value[4]);
 			if(Status_Value[1] % 20 == 19){
 				Status_Value[4]++;
 			}
-			break;
-		case 4:
-			//스테이지로 종료
-			DrawStr(10,10,"스테이지로 종료 - 곧 다음으로");
-			break;
-		case 5:
-			//스테이지로 계속하는지 묻기
-			ShowScroll();
-			SetFontType(S_FONT_LARGE, S_BLACK, S_BLACK, S_ALIGN_LEFT);
-			DrawStr(10,10,"스테이지 계속 할꺼예요?");
-			DrawTimeAttackContinue(Status_Select[1]);	//선택지 변수 예-아니오[1]
+			//타임어택 게임 플레이!!
+			DrawPlayNormalGame(Status_CurrentStage);	//게임을 하는 것
 			break;
 		case 6:
 			//점수 보기로 넘어가는 효과
+			SetFontType(S_FONT_LARGE, S_BLACK, S_BLACK, S_ALIGN_LEFT);
 			DrawStr(10,10,"점수 보기로 넘어가는 효과");
 			break;
 		case 7:
 			//점수 보기
+			SetFontType(S_FONT_LARGE, S_BLACK, S_BLACK, S_ALIGN_LEFT);
 			DrawStr(10,10,"점수 보기");
 			break;
 		case 8:
 			//점수보기 사라지는 효과
+			SetFontType(S_FONT_LARGE, S_BLACK, S_BLACK, S_ALIGN_LEFT);
 			DrawStr(10,10,"점수보기 사라지는 효과");
 			break;
 		case 9:
-			//타임 어택 종료
-			InitStatusValue();
-			Status_GameMode = Game_SelectPart;
+			//이번 모드 다시 시작
+			ControlMoveFrame(0);
 			return;
 	}
 

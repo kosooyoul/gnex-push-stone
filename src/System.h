@@ -70,9 +70,9 @@ int Temp2[4];
 //진행 변수 초기화
 void InitStatusValue(){
 	//진행 변수
-	Status_Value[0] = 0;
-	Status_Value[1] = 0;
-	Status_Value[2] = 0;
+	Status_Value[0] = 0;	//지정->애니매이션 및 장면 번호
+	Status_Value[1] = 0;	//지정->현재 카운터 값(계속 증가)
+	Status_Value[2] = 0;	//지정->최대 카운터 값(도달 되면 다음 장면으로)
 	Status_Value[3] = 0;
 	Status_Value[4] = 0;
 	Status_Value[5] = 0;

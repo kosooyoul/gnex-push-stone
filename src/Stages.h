@@ -17,7 +17,7 @@ struct Stage{
 	int StartCellY;
 	int EndCellX;
 	int EndCellY;
-}UnitStage[3];
+}UnitStage[6];
 
 void SetStage(int Index, int In_StartX, int In_StartY, int In_StartCellX, int In_StartCellY, int In_EndCellX, int In_EndCellY){
 	UnitStage[Index].StartX = In_StartX;

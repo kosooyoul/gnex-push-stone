@@ -45,6 +45,9 @@
 #define Size_One		16
 #define Size_Two		32
 #define Size_TwoHalf	40
+#define Size_Three		48
+#define Size_ThreeHalf	56
+#define Size_Four		64
 
 //-------------------- 변경 없는 정의 --------------------//
 //4 방향 정의, 상하좌우

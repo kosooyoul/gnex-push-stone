@@ -27,24 +27,31 @@ const string Str_NormalStageNote[MaxNormalStage] = {
 	"어질러졌어요! 청소도구를 가져와요"
 };
 
+//스테이지 초기화
 void InitPlayNormalGame(int Selected){
 	SetStage(0, 2, 3, 0, 0, 13, 11);	//14 * 12 사이즈가 최적임
-	Status_CurrentStage = 0;
-	StartStage(0);
-	SetTimer(50, 1);
+	Status_CurrentStage = Selected;
+	StartStage(Status_CurrentStage);
+	//SetTimer(50, 1);
 	return;
 }
 
+//스테이지 화면 출력
 void DrawPlayNormalGame(int Selected){
+	SetShadeColor(S_WHITEPINK, S_APRICOT);
+	ShadeRect( 0, 41, 240, 261, 1, 0);
+
 	DrawStage(Selected
 			, (MaxMapOptimalSizeX - (UnitStage[Selected].EndCellX - UnitStage[Selected].StartCellX)) * 8
-			, (MaxMapOptimalSizeY - (UnitStage[Selected].EndCellY - UnitStage[Selected].StartCellY)) * 8 + Size_TwoHalf);
+			, (MaxMapOptimalSizeY - (UnitStage[Selected].EndCellY - UnitStage[Selected].StartCellY)) * 8 + Size_Three);
 	if(Status_Moving == Yes){
 		Status_MoveSuccess = MovePlayer(Status_MovingDirection);
 	}
+
 	return;
 }
 
+//스테이지 제어
 void ControlPlayNormalGame(int SysData){
 	if((Status_MovingDirection == SysData && Option_AutoPush == Yes && Status_MoveSuccess == No)
 	|| SysData == SWAP_KEY_OK){
@@ -87,13 +94,6 @@ void DrawNormalMenu(int Selected){
 		}else{
 			DrawStr(25, 50 + 20 * i, Str_NormalStageName[i]);
 		}
-		for(j = 0; j < 5;j++){
-			if(Str_NormalStageStar[i] > j){
-		 		DrawStr(150 + 10 * j, 50 + 20 * i, "★");
-			}else{
-				DrawStr(150 + 10 * j, 50 + 20 * i, "☆");
-			}
-		}
 	}
 
 	SetColor(S_ROSE);
@@ -104,22 +104,45 @@ void DrawNormalMenu(int Selected){
 
 //게임 미리보기
 void DrawPreview(int Selected){
+	int j;
+
 	SetFontType(S_FONT_LARGE, S_BLACK, S_BLACK, S_ALIGN_LEFT);
-	DrawStr(20, 200, Str_NormalStageNote[Selected]);
+	DrawStr(20, 190, "난이도");
+	DrawStr(20, 220, Str_NormalStageNote[Selected]);
+	for(j = 0; j < 5;j++){
+		if(Str_NormalStageStar[Selected] > j){
+			CopyImage(65 + 25 * j, 185, Img_GameDifficultyYes);
+		}else{
+			CopyImage(65 + 25 * j, 185, Img_GameDifficultyNo);
+		}
+	}	
 }
 
 //게임 시작화면 및 준비
 void DrawGameNormalReady(int Selected){
 	int i;
 	
-	SetFontType(S_FONT_LARGE, S_BLACK, S_BLACK, S_ALIGN_LEFT);
-	DrawStr(10, 30, Str_NormalStageName[Selected]);
+	SetColor(S_WHITE);
+	FillRectEx( 0, 130, 240, 170, 1);
+	SetColor(S_DEEPSEA);
+	DrawHLine( 0, 240, 131);
+	DrawHLine( 0, 240, 169);
+
+	SetFontType(S_FONT_LARGE, S_BLACK, S_BLACK, S_ALIGN_CENTER);
+	DrawStr(120, 145, Str_NormalStageNote[Selected]);
+	SetFontAlign(S_ALIGN_LEFT);
+	//검은 테두리 문장
+	DrawStr(12, 88, Str_NormalStageName[Selected]);
+	DrawStr(12, 86, Str_NormalStageName[Selected]);
+	DrawStr(11, 87, Str_NormalStageName[Selected]);
+	DrawStr(13, 87, Str_NormalStageName[Selected]);
+	SetFontColor(S_WHITE, S_BLACK);
+	DrawStr(12, 87, Str_NormalStageName[Selected]);
 	for(i = 0; i < 5;i++){
 		if(Str_NormalStageStar[Selected] > i){
-			DrawStr(30 + 10 * i, 50, "★");
+			CopyImage(108 + 25 * i, 201, Img_GameDifficultyYes);
 		}else{
-			DrawStr(30 + 10 * i, 50, "☆");
+			CopyImage(108 + 25 * i, 201, Img_GameDifficultyNo);
 		}
-	}
-	DrawStr(10, 70, Str_NormalStageNote[Selected]);
+	}	
 }
