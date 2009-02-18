@@ -7,7 +7,7 @@
 /*		, Hotspot X, Hotspot Y, BlockInfo, BlockIdx, Transparent, Transparent Color       */
 /*                                                                           */
 /* First written : Saturday, February 14, 2004 18:14:05			     */
-/* Last modified : Wednesday, February 18, 2004 01:54:57			     */
+/* Last modified : Wednesday, February 18, 2004 23:14:09			     */
 /*                                                                           */
 /* Copyright(c) 2000~2007 Sinjisoft Corporation.  All rights reserved.       */
 /*****************************************************************************/
@@ -38,4 +38,7 @@ Img_PreviewTop,12,489,194,230,5,114,0,0,37,1,8422400
 Img_PreviewLeft,12,488,199,5,83,115,-5,0,38,1,8422400
 Img_PreviewBottom,12,493,279,223,5,110,-85,0,39,1,8422400
 Img_PreviewRight,12,712,199,6,80,-109,-5,0,40,1,8422400
+Img_GameReady1,12,242,324,179,71,0,0,0,41,1,16317440
+Img_GameDifficultyNo,12,422,324,20,20,0,0,0,43,1,16317440
+Img_GameDifficultyYes,12,443,324,20,20,0,0,0,44,1,16317440
 
