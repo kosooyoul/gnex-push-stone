@@ -29,7 +29,14 @@ const string Str_NormalStageNote[MaxNormalStage] = {
 
 //스테이지 초기화
 void InitPlayNormalGame(int Selected){
-	SetStage(0, 2, 3, 0, 0, 13, 11);	//14 * 12 사이즈가 최적임
+	switch(Selected){
+		case 0:
+			SetStage(0, 14, 6, 1, 0, 14, 11);	//14 * 12 사이즈가 최적임
+			break;
+		default:
+			SetStage(Selected,14,10,14, 0, 27, 11);
+	}
+
 	Status_CurrentStage = Selected;
 	StartStage(Status_CurrentStage);
 	//SetTimer(50, 1);
@@ -38,12 +45,13 @@ void InitPlayNormalGame(int Selected){
 
 //스테이지 화면 출력
 void DrawPlayNormalGame(int Selected){
-	SetShadeColor(S_WHITEPINK, S_APRICOT);
+	//SetShadeColor(S_WHITEPINK, S_APRICOT);
+	SetShadeColor(S_CLEARSKY, S_DEEPSEA);
 	ShadeRect( 0, 41, 240, 261, 1, 0);
 
 	DrawStage(Selected
-			, (MaxMapOptimalSizeX - (UnitStage[Selected].EndCellX - UnitStage[Selected].StartCellX)) * 8
-			, (MaxMapOptimalSizeY - (UnitStage[Selected].EndCellY - UnitStage[Selected].StartCellY)) * 8 + Size_Three);
+			, (MaxMapOptimalSizeX - (UnitStage[Selected].EndCellX - UnitStage[Selected].StartCellX)) * 8 + Size_CntHalf
+			, (MaxMapOptimalSizeY - (UnitStage[Selected].EndCellY - UnitStage[Selected].StartCellY)) * 8 + Size_ThreeHalf);
 	if(Status_Moving == Yes){
 		Status_MoveSuccess = MovePlayer(Status_MovingDirection);
 	}

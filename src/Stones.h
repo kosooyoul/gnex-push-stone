@@ -3,10 +3,10 @@
 	by www.Ahyane.net ^^*
 */
 
-#include "StoneImages.sbm"
+//#include "StoneImages.sbm"
 
 struct Stone{
-	int Shape;		//모양 - 블럭 결합에 사용
+	int Img;		//Img:Shape모양 - 블럭 결합에 사용
 	int Metrial;	//재질 - 제거하는데 사용
 	int Power;		//힘 - 미는데 필요한 힘 비율
 	int State;		//상태 - 숨김, 블럭, 자리고정, 홀, 겹침
@@ -18,17 +18,18 @@ struct Stone{
 }UnitStone[20];
 
 void SetStone(int Index, int In_Shape, int In_Metrial, int In_Power, int In_State, int In_X, int In_Y){
-	UnitStone[Index].Shape = In_Shape;
+	UnitStone[Index].Img = In_Shape;
 	UnitStone[Index].Metrial = In_Metrial;
 	UnitStone[Index].Power = In_Power;
 	UnitStone[Index].State = In_State;
-	UnitStone[Index].X = In_X;
-	UnitStone[Index].Y = In_Y;
+	UnitStone[Index].X = In_X+UnitStage[Index].StartCellX;
+	UnitStone[Index].Y = In_Y+UnitStage[Index].StartCellY;
+	Place[In_Y][In_X] = Index;
 	return;
 }
 
 int GetStoneImageIndex(int Index){
-	return UnitStone[Index].Shape + UnitStone[Index].Metrial * 5;
+	return UnitStone[Index].Img + UnitStone[Index].Metrial * 5;
 }
 
 void ScrollStone(int Index){
@@ -47,6 +48,7 @@ void ScrollStone(int Index){
 
 void DrawStone(int Index, int CellX, int CellY, int StageX, int StageY){
 	switch(UnitStone[Index].State){
+		/*
 		case S_CoupIn:
 			CopyImage(StageX + (UnitStone[Index].X - CellX) * 16
 					, StageY + (UnitStone[Index].Y - CellY) * 16
@@ -67,10 +69,11 @@ void DrawStone(int Index, int CellX, int CellY, int StageX, int StageY){
 					, StageY + (UnitStone[Index].Y - CellY) * 16
 					, StoneOut[0]);
 			break;
+			*/
 		case S_Out:
-			CopyImage(UnitStone[Index].ScrollX + StageX + (UnitStone[Index].X - CellX) * 16
-					, UnitStone[Index].ScrollY + StageY + (UnitStone[Index].Y - CellY) * 16
-					, StoneOut[0]);
+			CopyImage(UnitStone[Index].ScrollX + StageX + (UnitStone[Index].X - CellX) * Size_Connected
+					, UnitStone[Index].ScrollY + StageY + (UnitStone[Index].Y - CellY) * Size_Connected
+					, Img_StoneOut[UnitStone[Index].Img]);
 			break;
 	}
 	return;

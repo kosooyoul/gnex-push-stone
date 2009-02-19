@@ -23,6 +23,10 @@ void SetPlayer(int In_X, int In_Y, int In_Direction){
 }
 
 void ScrollPlayer(){
+	if(UnitPlayer.ScrollX != 0 || UnitPlayer.ScrollY != 0){
+		UnitPlayer.Frame = (UnitPlayer.Frame + 1) % 12;
+	}
+
 	if(UnitPlayer.ScrollX > 0){
 		UnitPlayer.ScrollX -= D_PlayerSCU;
 	}else if(UnitPlayer.ScrollX < 0){
@@ -37,7 +41,22 @@ void ScrollPlayer(){
 }
 
 void DrawPlayer(int StartCellX, int StartCellY, int StageX, int StageY){
-	CopyImage(UnitPlayer.ScrollX + (UnitPlayer.X - StartCellX) * 16 + StageX
-			, UnitPlayer.ScrollY + (UnitPlayer.Y - StartCellY) * 16 + StageY
-			, MapChip[4]);
+	int TempFrmae;
+	
+	switch(UnitPlayer.Direction){
+		case D_Up:		TempFrmae = 0;break;
+		case D_Down:	TempFrmae = 3;break;
+		case D_Left:	TempFrmae = 6;break;
+		case D_Right:	TempFrmae = 9;break;
+	}
+	
+	switch(UnitPlayer.Frame / 3){
+		case 1:		TempFrmae += 1;break;
+		case 2:		TempFrmae += 2;break;
+		case 3:		TempFrmae += 1;break;
+	}
+
+	CopyImage(UnitPlayer.ScrollX + (UnitPlayer.X - StartCellX) * Size_Connected + StageX
+			, UnitPlayer.ScrollY + (UnitPlayer.Y - StartCellY) * Size_Connected + StageY
+			, Img_Chara[TempFrmae]);
 }

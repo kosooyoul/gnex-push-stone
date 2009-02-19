@@ -5,11 +5,11 @@
 
 //-------------------- 변경 있는 정의 --------------------//
 //맵 데이터 최대 사이즈
-#define MaxSizeX	20
-#define MaxSizeY	20
+#define MaxSizeX	40
+#define MaxSizeY	40
 
 //배치 데이터 최대 사이즈
-#define MaxPlaceSizeX	14
+#define MaxPlaceSizeX	20
 #define MaxPlaceSizeY	12
 
 //맵 최적의 사이즈
@@ -17,7 +17,7 @@
 #define MaxMapOptimalSizeY	12
 
 //D_MoveAble번칩까지는 이동 불가능
-#define D_MoveAble	0
+#define D_MoveAble	-1
 
 //케릭터 수
 //#define MaxCharaCount		10
@@ -41,7 +41,9 @@
 #define MaxShowScrollCounting	8
 
 //각 갯수별 셀의 사이즈
+#define Size_CntHalf	7
 #define Size_Half		8
+#define Size_Connected	15
 #define Size_One		16
 #define Size_Two		32
 #define Size_TwoHalf	40

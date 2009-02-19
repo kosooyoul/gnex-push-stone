@@ -29,9 +29,11 @@ void DrawMap(int StartCellX, int StartCellY, int EndCellX, int EndCellY, int Sta
 	for(x = StartCellX; x <= EndCellX; x++){
 		for(y = StartCellY; y <= EndCellY ; y++){
 			if(x >= 0 && x < MaxSizeX && y >= 0 && y < MaxSizeY){
-				CopyImage(MapScrollX + (x - StartCellX) * 16 + StageX
-						, MapScrollY + (y - StartCellY) * 16 + StageY
-						, MapChip[Map[y][x]]);
+				if(Map[y][x] > -1){
+					CopyImage(MapScrollX + (x - StartCellX) * Size_Connected + StageX
+							, MapScrollY + (y - StartCellY) * Size_Connected + StageY
+							, Img_MapChip[Map[y][x]]);
+				}
 			}
 		}
 	}		

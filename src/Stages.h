@@ -31,30 +31,35 @@ void SetStage(int Index, int In_StartX, int In_StartY, int In_StartCellX, int In
 
 void StartStage(int Index){
 	InitPlace();
-	SetStone(0, S_Rect, M_Wood, 50, S_Out, 4, 9);
-	SetStone(1, S_Rect, M_Wood, 50, S_Out, 3, 7);
-	SetStone(2, S_Rect, M_Wood, 50, S_Out, 3, 4);
-	SetStone(3, S_Rect, M_Wood, 50, S_Out, 7, 9);
-	SetStone(4, S_Rect, M_Wood, 50, S_Out, 6, 7);
+	SetStone(0, 0, M_Wood, 50, S_Out, 4, 9);
+	SetStone(1, 0, M_Wood, 50, S_Out, 3, 7);
+	SetStone(2, 1, M_Wood, 50, S_Out, 3, 4);
+	SetStone(3, 1, M_Wood, 50, S_Out, 7, 9);
+	SetStone(4, 1, M_Wood, 50, S_Out, 6, 7);
 
+/*
 	SetPlace(0, 4, 9);
 	SetPlace(1, 3, 7);
 	SetPlace(2, 3, 4);
 	SetPlace(3, 7, 9);
 	SetPlace(4, 6, 7);
+*/
+
+//	SetPlace(Index, UnitStone[Index].X+UnitStage[Index].StartCellX, UnitStone[Index].Y+UnitStage[Index].StartCellY);
+
 	UnitPlayer.X = UnitStage[Index].StartX;
 	UnitPlayer.Y = UnitStage[Index].StartY;
 }
 
 void DrawStage(int Index, int StageScrollX, int StageScrollY){
 	int x, y;
+
 	//맵 출력
 	DrawMap(UnitStage[Index].StartCellX, UnitStage[Index].StartCellY,
 			UnitStage[Index].EndCellX, UnitStage[Index].EndCellY, StageScrollX, StageScrollY);
-
 	//돌덩이와 플레이어 출력
-	for(x = UnitStage[Index].StartCellX; x <= UnitStage[Index].EndCellX; x++){
-		for(y = UnitStage[Index].StartCellY; y <= UnitStage[Index].EndCellY; y++){
+	for(y = UnitStage[Index].StartCellY; y <= UnitStage[Index].EndCellY; y++){
+		for(x = UnitStage[Index].StartCellX; x <= UnitStage[Index].EndCellX; x++){
 			if(GetCurrentPlace(x, y) == Null){
 				if(UnitPlayer.Y == y && UnitPlayer.X == x){
 					ScrollPlayer();
